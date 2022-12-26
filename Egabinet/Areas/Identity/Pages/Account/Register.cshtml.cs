@@ -103,6 +103,11 @@ namespace Egabinet.Areas.Identity.Pages.Account
             [Display(Name = "Add Surname")]
             public string Surname { get; set; }
 
+
+            [Required]
+            [Display(Name = "Role")]
+            public string Role { get; set; }
+
         }
 
 
@@ -120,6 +125,7 @@ namespace Egabinet.Areas.Identity.Pages.Account
             {
                 var user = CreateUser();
                 user.Surname = Input.Surname;
+                user.Role = Input.Role;
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
 

@@ -23,6 +23,11 @@
                 <span asp-validation-for="Input.Surname" class="text-danger"></span>
             </div>
             <div class="form-floating mb-3">
+                <input asp-for="Input.Name" class="form-control" aria-required="true" />
+                <label asp-for="Input.Name"></label>
+                <span asp-validation-for="Input.Name" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
                 <input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" />
                 <label asp-for="Input.Password"></label>
                 <span asp-validation-for="Input.Password" class="text-danger"></span>
@@ -33,11 +38,19 @@
                 <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
             </div>
             <div class="form-floating">
-                <select class="form-select mb-3" aria-label="Default select example" asp-for="Input.Role ">
+                <select class="form-select mb-3" aria-label="Default select example" asp-for="Input.Permission">
+                <option selected>Choose Permission</option>
+                    <option value="72f2ff00-761f-4727-b07c-5381992b5e0a">Administrator</option>
+                    <option value="c1eeb9bd-5412-495a-8abf-a4157f1b546d">Reader</option>
+                    <option value=" 04d94d89-fe74-43ba-b052-90d5f3dea95f">Writer</option>
+            </select>
+            </div>
+            <div class="form-floating">
+                <select class="form-select mb-3" aria-label="Default select example" asp-for="Input.Role">
                 <option selected>Choose Role</option>
-                <option value="1">Patient</option>
-                <option value="2">Nurse</option>
-                <option value="3">Doctor</option>
+                    <option value="1">Doctor</option>
+                    <option value="2">Nurse</option>
+                    <option value="3">Patient</option>
             </select>
             </div>
 

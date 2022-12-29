@@ -1,16 +1,15 @@
-﻿using Microsoft.AspNetCore.Identity;
-
-namespace Egabinet.Models
+﻿namespace Egabinet.Models
 {
     public class UpdateNurseViewModel
     {
 
-            public string Id { get; set; }
-            public string Surname { get; set; }
-            public DateTime DateOfBirth { get; set; }
-            public string Role { get; set; }
+        public string Id { get; set; }
+        public string Surname { get; set; }
+        public string Address { get; set; }
+        public string PermissionNumber { get; set; }
 
-        
+
+
     }
 
 

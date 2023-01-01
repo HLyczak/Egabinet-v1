@@ -11,7 +11,7 @@ namespace Egabinet.Data
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
-            //  Database.EnsureCreated();
+            Database.EnsureCreated();
         }
 
         public DbSet<Doctor> Doctor { get; set; }
@@ -79,39 +79,39 @@ namespace Egabinet.Data
                 (new Nurse { Id = "9ae453af-8db3-440c-b8d0-1c55299ce188", UserId = "00221f79-bc71-4186-9e5d-bfd57a80a43f", Name = "AZofia", Surname = "Stanecka", Address = " Różana 5", PermissionNumber = " 509853" },
                 new Nurse { Id = "e40f8b49-f885-48c0-bb64-21c0d0813e88", UserId = "32923230-6c8c-4510-b73e-d9bcf2484879", Name = "Hanna", Surname = " Oklejka", Address = " Topografów 5", PermissionNumber = " 510053" },
                 new Nurse { Id = "68041977-3f99-4e4f-ac71-0b03a3606750", UserId = "ed216c2a-3e1c-486f-b8ca-5f13bd8baee8", Name = "Anna ", Surname = " Austen", Address = " os. Kolorowe 8", PermissionNumber = " 169053" },
-                new Nurse { Id = "965e09d6-0ed5-4e7a-8950-e252b1ae5380", UserId = "c2ebef8b-eee6-4328-ba4d-f01a04fe4f83", Name = "Glżbieta Lem", Address = " Obozowa 14", PermissionNumber = " 567053" }
+                new Nurse { Id = "965e09d6-0ed5-4e7a-8950-e252b1ae5380", UserId = "c2ebef8b-eee6-4328-ba4d-f01a04fe4f83", Name = "Glżbieta Lem", Surname = " Lockman", Address = " Obozowa 14", PermissionNumber = " 567053" }
                  );
 
             modelBuilder.Entity<Doctor>().HasData
-               (new Doctor { Id = "3e01671b-18fc-4f8c-bfd8-fa12666a99b6", UserId = "ef9632fc-d406-412f-9b7a-09b902db6dfa", Name = "Adam", Surname = "Kowalski", Adress = " Kolorowa 5", PermissionNumber = " 569853", SpecializationId = 1 },
-               new Doctor { Id = "1769f6fc-fb40-44ed-bb10-70c0c13a97e3", UserId = "785a5776-fbba-4021-a263-4b9daade6ac8", Name = "Zofia", Surname = "Kowalski", Adress = " Zielona 5", PermissionNumber = " 560053", SpecializationId = 2 },
-               new Doctor { Id = "ba61c248-a31d-4c10-9e7c-9d8d32defeea", UserId = "452db704-3650-457a-a7da-ca545a521776", Name = "Todor", Surname = " Nowaki", Adress = " Adama Mickiewicza 8", PermissionNumber = " 160053", SpecializationId = 3 },
-               new Doctor { Id = "519e3b1c-8357-470d-9643-9be49bd669a3", UserId = "965e09d6-0ed5-4e7a-8950-e252b1ae5380", Name = "Grzegorz", Surname = "Lem", Adress = " Obozowa 8", PermissionNumber = " 560053", SpecializationId = 4 }
+               (new Doctor { Id = "3e01671b-18fc-4f8c-bfd8-fa12666a99b6", UserId = "ef9632fc-d406-412f-9b7a-09b902db6dfa", Name = "Adam", Surname = "Kowalski", Adress = " Kolorowa 5", PermissionNumber = " 569853", SpecializationId = "6a3d526e-1fb6-4de7-bde5-e0754fc58aec" },
+               new Doctor { Id = "1769f6fc-fb40-44ed-bb10-70c0c13a97e3", UserId = "785a5776-fbba-4021-a263-4b9daade6ac8", Name = "Zofia", Surname = "Kowalski", Adress = " Zielona 5", PermissionNumber = " 560053", SpecializationId = "4e8effeb-0a99-4038-9420-0c543a3a28ac" },
+               new Doctor { Id = "ba61c248-a31d-4c10-9e7c-9d8d32defeea", UserId = "452db704-3650-457a-a7da-ca545a521776", Name = "Todor", Surname = " Nowaki", Adress = " Adama Mickiewicza 8", PermissionNumber = " 160053", SpecializationId = "e86959d5-6eed-45f7-b5cb-6b8f68a4d085" },
+               new Doctor { Id = "519e3b1c-8357-470d-9643-9be49bd669a3", UserId = "7fe50ba2-def6-4ac0-8b3e-87d3b4ce693f", Name = "Grzegorz", Surname = "Lem", Adress = " Obozowa 8", PermissionNumber = " 560053", SpecializationId = "690e47d4-996b-43b7-a23b-d9693cf5962c" }
                 );
 
             modelBuilder.Entity<TimeSheet>().HasData
-            (new TimeSheet { Id = "06223eb9-588c-4b2d-a0ab-c3c5ad65ae78", PatientId = 1, DoctorId = 1, RoomId = 1, Data = new DateTime(2022, 05, 10) },
-             new TimeSheet { Id = "56932a73-5813-4215-bc39-686b11a12afc", PatientId = 2, DoctorId = 2, RoomId = 2, Data = new DateTime(2022, 05, 10) },
-             new TimeSheet { Id = "64060098-a52b-4e91-b5b6-63d292cea083", PatientId = 3, DoctorId = 3, RoomId = 3, Data = new DateTime(2022, 10, 10) },
-             new TimeSheet { Id = "7fd77adc-02e5-444e-9b7e-feb2113ac22f", PatientId = 4, DoctorId = 3, RoomId = 4, Data = new DateTime(2022, 10, 10) }
+            (new TimeSheet { Id = "06223eb9-588c-4b2d-a0ab-c3c5ad65ae78", PatientId = "9262b74c-f7b4-47ba-8fcf-087241096f34", DoctorId = "3e01671b-18fc-4f8c-bfd8-fa12666a99b6", RoomId = "d36af7ac-73cb-459e-847f-0abea3581814", Data = new DateTime(2022, 05, 10) },
+             new TimeSheet { Id = "56932a73-5813-4215-bc39-686b11a12afc", PatientId = "23159457-b301-4839-932a-3fd939f8b6c4", DoctorId = "1769f6fc-fb40-44ed-bb10-70c0c13a97e3", RoomId = "4b4e2a8f-ab04-40ab-827d-3c7789208e4c", Data = new DateTime(2022, 05, 10) },
+             new TimeSheet { Id = "64060098-a52b-4e91-b5b6-63d292cea083", PatientId = "9de0d585-60a6-445c-910c-e26ccaf46274", DoctorId = "ba61c248-a31d-4c10-9e7c-9d8d32defeea", RoomId = "c5f12060-322b-42be-bba6-689e2e0c5721", Data = new DateTime(2022, 10, 10) },
+             new TimeSheet { Id = "7fd77adc-02e5-444e-9b7e-feb2113ac22f", PatientId = "816c62f5-2b08-4042-8008-07a46b920921", DoctorId = "519e3b1c-8357-470d-9643-9be49bd669a3", RoomId = "525e8058-b3a1-4a9f-83e5-355848d1e6c5", Data = new DateTime(2022, 10, 10) }
 
             );
             modelBuilder.Entity<IdentityUserRole<string>>().HasData
             (
-             new IdentityUserRole<string> { RoleId = "04d94d89-fe74-43ba-b052-90d5f3dea95f", UserId = "9262b74c-f7b4-47ba-8fcf-087241096f34" },
-             new IdentityUserRole<string> { RoleId = "c1eeb9bd-5412-495a-8abf-a4157f1b546d", UserId = "23159457-b301-4839-932a-3fd939f8b6c4" },
-             new IdentityUserRole<string> { RoleId = "c1eeb9bd-5412-495a-8abf-a4157f1b546d", UserId = "9de0d585-60a6-445c-910c-e26ccaf46274" },
-             new IdentityUserRole<string> { RoleId = "c1eeb9bd-5412-495a-8abf-a4157f1b546d", UserId = "816c62f5-2b08-4042-8008-07a46b920921" },
+             new IdentityUserRole<string> { RoleId = "04d94d89-fe74-43ba-b052-90d5f3dea95f", UserId = "66126f74-f32b-435d-9e24-b3ed8b3d6011" },
+             new IdentityUserRole<string> { RoleId = "c1eeb9bd-5412-495a-8abf-a4157f1b546d", UserId = "26dfb75e-5f31-4a54-9844-f019998a61d1" },
+             new IdentityUserRole<string> { RoleId = "c1eeb9bd-5412-495a-8abf-a4157f1b546d", UserId = "64791af4-436d-4419-b3e1-14641bdb2493" },
+             new IdentityUserRole<string> { RoleId = "c1eeb9bd-5412-495a-8abf-a4157f1b546d", UserId = "cef7f7aa-d198-4373-b441-926d8e52dbb1" },
 
-             new IdentityUserRole<string> { RoleId = "72f2ff00-761f-4727-b07c-5381992b5e0a", UserId = "9ae453af-8db3-440c-b8d0-1c55299ce188" },
-             new IdentityUserRole<string> { RoleId = "04d94d89-fe74-43ba-b052-90d5f3dea95f", UserId = "e40f8b49-f885-48c0-bb64-21c0d0813e88" },
-             new IdentityUserRole<string> { RoleId = "04d94d89-fe74-43ba-b052-90d5f3dea95f", UserId = "68041977-3f99-4e4f-ac71-0b03a3606750" },
-             new IdentityUserRole<string> { RoleId = "04d94d89-fe74-43ba-b052-90d5f3dea95f", UserId = "965e09d6-0ed5-4e7a-8950-e252b1ae5380" },
+             new IdentityUserRole<string> { RoleId = "72f2ff00-761f-4727-b07c-5381992b5e0a", UserId = "00221f79-bc71-4186-9e5d-bfd57a80a43f" },
+             new IdentityUserRole<string> { RoleId = "04d94d89-fe74-43ba-b052-90d5f3dea95f", UserId = "32923230-6c8c-4510-b73e-d9bcf2484879" },
+             new IdentityUserRole<string> { RoleId = "04d94d89-fe74-43ba-b052-90d5f3dea95f", UserId = "ed216c2a-3e1c-486f-b8ca-5f13bd8baee8" },
+             new IdentityUserRole<string> { RoleId = "04d94d89-fe74-43ba-b052-90d5f3dea95f", UserId = "c2ebef8b-eee6-4328-ba4d-f01a04fe4f83" },
 
-             new IdentityUserRole<string> { RoleId = "04d94d89-fe74-43ba-b052-90d5f3dea95f", UserId = "06223eb9-588c-4b2d-a0ab-c3c5ad65ae78" },
-             new IdentityUserRole<string> { RoleId = "04d94d89-fe74-43ba-b052-90d5f3dea95f", UserId = "56932a73-5813-4215-bc39-686b11a12afc" },
-             new IdentityUserRole<string> { RoleId = "04d94d89-fe74-43ba-b052-90d5f3dea95f", UserId = "64060098-a52b-4e91-b5b6-63d292cea083" },
-             new IdentityUserRole<string> { RoleId = "04d94d89-fe74-43ba-b052-90d5f3dea95f", UserId = "519e3b1c-8357-470d-9643-9be49bd669a3" }
+             new IdentityUserRole<string> { RoleId = "04d94d89-fe74-43ba-b052-90d5f3dea95f", UserId = "ef9632fc-d406-412f-9b7a-09b902db6dfa" },
+             new IdentityUserRole<string> { RoleId = "04d94d89-fe74-43ba-b052-90d5f3dea95f", UserId = "785a5776-fbba-4021-a263-4b9daade6ac8" },
+             new IdentityUserRole<string> { RoleId = "04d94d89-fe74-43ba-b052-90d5f3dea95f", UserId = "452db704-3650-457a-a7da-ca545a521776" },
+             new IdentityUserRole<string> { RoleId = "04d94d89-fe74-43ba-b052-90d5f3dea95f", UserId = "7fe50ba2-def6-4ac0-8b3e-87d3b4ce693f" }
 
             );
 

@@ -2,12 +2,16 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
 
+using Egabinet.Data;
+using Egabinet.Models.Domain;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 using System.Text.Encodings.Web;
@@ -16,6 +20,7 @@ namespace Egabinet.Areas.Identity.Pages.Account
 {
     public class RegisterModel : PageModel
     {
+        private readonly ApplicationDbContext _dbContext;
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly IUserStore<IdentityUser> _userStore;
@@ -28,7 +33,9 @@ namespace Egabinet.Areas.Identity.Pages.Account
             IUserStore<IdentityUser> userStore,
             SignInManager<IdentityUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            ApplicationDbContext dbContext
+            )
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -36,7 +43,9 @@ namespace Egabinet.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _dbContext = dbContext;
         }
+
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -45,6 +54,8 @@ namespace Egabinet.Areas.Identity.Pages.Account
         [BindProperty]
         public InputModel Input { get; set; }
 
+        [BindProperty]
+        public IEnumerable<SelectListItem> Specializations { get; set; }
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
         ///     directly from your code. This API may change or be removed in future releases.
@@ -104,33 +115,46 @@ namespace Egabinet.Areas.Identity.Pages.Account
             [Display(Name = "Role")]
             public string Role { get; set; }
 
-            [Required]
-            [Display(Name = "Permission")]
-            public string Permission { get; set; }
+
+            [Display(Name = "Permission Number")]
+            public string PermissionNumber { get; set; }
+
+
+            [Display(Name = "Address")]
+            public string Address { get; set; }
+
+            [Display(Name = "Specialization ID")]
+            public string SpecializationId { get; set; }
+
+
 
         }
 
-
-        public async Task OnGetAsync(string returnUrl = null)
+        //GEEEEEEEEEET
+        public async Task<IActionResult> OnGetAsync(string returnUrl = null)
         {
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-        }
 
+            Specializations = await _dbContext.Specialization.Select(x => new SelectListItem(x.Value, x.Id)).ToListAsync();
+
+            return Page();
+        }
+        //POOOOOOOOOOOST
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl ??= Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+
             if (ModelState.IsValid)
             {
                 var user = CreateUser();
-                user.Surname = Input.Surname;
-                user.Name = Input.Surname;
-                user.Role = Input.Role;
+
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
 
                 var result = await _userManager.CreateAsync(user, Input.Password);
+
 
                 if (result.Succeeded)
                 {
@@ -144,6 +168,51 @@ namespace Egabinet.Areas.Identity.Pages.Account
                         pageHandler: null,
                         values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
                         protocol: Request.Scheme);
+
+                    var userRole = new IdentityUserRole<string> { UserId = userId };
+
+                    if (Input.Role == "1")
+                    {
+                        var doctor = new Doctor();
+                        doctor.UserId = userId;
+                        userRole.RoleId = "04d94d89-fe74-43ba-b052-90d5f3dea95f";
+                        doctor.Surname = Input.Name;
+                        doctor.Adress = Input.Address;
+                        doctor.PermissionNumber = Input.PermissionNumber;
+                        doctor.Surname = Input.Surname;
+                        doctor.Name = Input.Name;
+                        doctor.SpecializationId = Input.SpecializationId;
+                        _dbContext.Add(doctor);
+                        _dbContext.Add(userRole);
+                        await _dbContext.SaveChangesAsync();
+                    }
+                    if (Input.Role == "2")
+                    {
+                        var nurse = new Nurse();
+                        nurse.UserId = userId;
+                        userRole.RoleId = "72f2ff00-761f-4727-b07c-5381992b5e0a";
+                        nurse.Address = Input.Address;
+                        nurse.PermissionNumber = Input.PermissionNumber;
+                        nurse.Surname = Input.Surname;
+                        nurse.Name = Input.Name;
+                        _dbContext.Add(nurse);
+                        _dbContext.Add(userRole);
+                        await _dbContext.SaveChangesAsync();
+                    }
+                    if (Input.Role == "3")
+                    {
+                        var patient = new Patient();
+                        userRole.RoleId = "c1eeb9bd-5412-495a-8abf-a4157f1b546d";
+                        patient.UserId = userId;
+                        patient.Address = Input.Address;
+                        patient.Surname = Input.Surname;
+                        patient.Name = Input.Name;
+                        _dbContext.Add(patient);
+                        _dbContext.Add(userRole);
+
+                        await _dbContext.SaveChangesAsync();
+                    }
+
 
                     await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
                         $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
@@ -164,6 +233,7 @@ namespace Egabinet.Areas.Identity.Pages.Account
                 }
             }
 
+            Console.WriteLine("ZL MODEL");
             // If we got this far, something failed, redisplay form
             return Page();
         }

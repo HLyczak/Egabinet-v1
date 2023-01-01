@@ -12,47 +12,71 @@
             <h2>Create a new account.</h2>
             <hr />
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-floating mb-3">
-                <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" />
+            <div class="form-group">
                 <label asp-for="Input.Email"></label>
+                <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" />                
                 <span asp-validation-for="Input.Email" class="text-danger"></span>
             </div>
-            <div class="form-floating mb-3">
-                <input asp-for="Input.Surname" class="form-control" aria-required="true" />
-                <label asp-for="Input.Surname"></label>
-                <span asp-validation-for="Input.Surname" class="text-danger"></span>
-            </div>
-            <div class="form-floating mb-3">
-                <input asp-for="Input.Name" class="form-control" aria-required="true" />
+            <div class="form-group">
                 <label asp-for="Input.Name"></label>
+                <input asp-for="Input.Name" class="form-control" aria-required="true" />
+
                 <span asp-validation-for="Input.Name" class="text-danger"></span>
             </div>
-            <div class="form-floating mb-3">
-                <input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" />
+            <div class="form-group">
+                <label asp-for="Input.Surname"></label>
+                <input asp-for="Input.Surname" class="form-control" aria-required="true" />
+               
+                <span asp-validation-for="Input.Surname" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.Address"></label>
+                <input asp-for="Input.Address" class="form-control" aria-required="true" />             
+                <span asp-validation-for="Input.Address" class="text-danger"></span>
+            </div>
+                        <div class="form-group mt-1 mb-1 ">
+                <label asp-for="Input.Role">Choose Role</label>
+                <select class="form-select" aria-label="Default select example" asp-for="Input.Role">
+                    <option value="1">Doctor</option>
+                    <option value="2">Nurse</option>
+                    <option value="3">Patient</option>
+            </select>
+            </div>
+ 
+            <div class="form-group mt-1" id="SpecializationId">
+                <label asp-for =Input.SpecializationId>
+                    Choose Specialization</label>
+            @Html.DropDownListFor(
+            x => x.Input.SpecializationId,
+            Model.Specializations,
+                new{@class ="form-select "}
+            )
+            </div>
+           
+            <div class="form-group" id="PermissionNumber">
+                <label asp-for="Input.PermissionNumber"></label>
+                 <input asp-for="Input.PermissionNumber" class="form-control" aria-required="true" /> 
+                 <span asp-validation-for="Input.PermissionNumber" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
                 <label asp-for="Input.Password"></label>
+                <input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" />                
                 <span asp-validation-for="Input.Password" class="text-danger"></span>
             </div>
-            <div class="form-floating mb-3">
-                <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" />
+            <div class="form-group mb-3">
                 <label asp-for="Input.ConfirmPassword"></label>
+                <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" />                
                 <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
             </div>
-            <div class="form-floating">
+@*            <div class="form-floating">
                 <select class="form-select mb-3" aria-label="Default select example" asp-for="Input.Permission">
                 <option selected>Choose Permission</option>
                     <option value="72f2ff00-761f-4727-b07c-5381992b5e0a">Administrator</option>
                     <option value="c1eeb9bd-5412-495a-8abf-a4157f1b546d">Reader</option>
                     <option value=" 04d94d89-fe74-43ba-b052-90d5f3dea95f">Writer</option>
             </select>
-            </div>
-            <div class="form-floating">
-                <select class="form-select mb-3" aria-label="Default select example" asp-for="Input.Role">
-                <option selected>Choose Role</option>
-                    <option value="1">Doctor</option>
-                    <option value="2">Nurse</option>
-                    <option value="3">Patient</option>
-            </select>
-            </div>
+            </div>*@
 
             <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
         </form>
@@ -63,3 +87,29 @@
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }
+<script type="text/javascript">
+    console.log("wchodze")
+    const role_select = document.querySelector("#Input_Role");
+    const input_permission_number = document.querySelector("#PermissionNumber")
+    const input_specialization = document.querySelector("#SpecializationId")
+    role_select.addEventListener("change", function () 
+        {
+            if (this.value == "1")
+            {
+                input_permission_number.classList.remove("d-none");
+                input_specialization.classList.remove("d-none");
+
+            }
+            else if (this.value == "2") 
+            { 
+                input_permission_number.classList.remove("d-none");
+                input_specialization.classList.add("d-none");
+            }
+            else
+            {
+                input_permission_number.classList.add("d-none");
+                input_specialization.classList.add("d-none");
+            }
+        }
+    )
+</script>

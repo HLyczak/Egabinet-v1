@@ -18,15 +18,15 @@ namespace Egabinet.Models.Domain
 
         [Required]
         [ForeignKey("Specialization")]
-        public long SpecializationId { get; set; }
+        public string SpecializationId { get; set; }
         public Specialization Specialization { get; set; }
 
         [Required]
-        public string PermissionNumber { get; set; } 
-        
+        public string PermissionNumber { get; set; }
+
         [Required]
-        public string Name { get; set; } 
-        
+        public string Name { get; set; }
+
         [Required]
         public string Surname { get; set; }
 

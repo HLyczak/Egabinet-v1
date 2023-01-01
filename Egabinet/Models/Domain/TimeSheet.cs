@@ -12,17 +12,17 @@ namespace Egabinet.Models.Domain
         public DateTime Data { get; set; }
 
         [ForeignKey("Patient")]
-        public long PatientId { get; set; }
+        public string PatientId { get; set; }
 
         public Patient Patient { get; set; }
 
         [ForeignKey("Doctor")]
-        public long DoctorId { get; set; }
+        public string DoctorId { get; set; }
 
         public Doctor Doctor { get; set; }
 
         [ForeignKey("Room")]
-        public long RoomId { get; set; }
+        public string RoomId { get; set; }
 
         public Room Room { get; set; }
     }

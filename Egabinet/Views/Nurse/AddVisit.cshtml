@@ -1,3 +1,37 @@
-﻿@model Egabinet.Models.AddVisitViewModel
+﻿
+@model Egabinet.Models.AddVisitViewModel
+
+
 @{
 }
+
+
+<h1>Add Visit</h1>
+<form method="post" action="View" class="mt-5">
+                <div class="form-group mt-1" id="Doctor">
+        <label asp-for=SelectedDoctor>
+            Selected Doctor
+        </label>
+            @Html.DropDownListFor(
+        x => x.SelectedDoctor,
+            Model.Doctors,
+                new{@class ="form-select "}
+            )
+            </div>
+
+            <div class="form-group mt-1" id="Patient">
+        <label asp-for=SelectedPatient>
+            Selected Patient
+        </label>
+        @Html.DropDownListFor(
+        x => x.SelectedPatient,
+            Model.Patients,
+                new{@class ="form-select "}
+            )
+            </div>
+          
+
+
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>

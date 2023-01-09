@@ -11,6 +11,7 @@ namespace Egabinet.Controllers
     public class NurseController : Controller
     {
         private readonly ApplicationDbContext _dbContext;
+
         public NurseController(ApplicationDbContext _dbContext)
         {
             this._dbContext = _dbContext;
@@ -50,8 +51,8 @@ namespace Egabinet.Controllers
             return await Task.Run(() => View("EditNurse", viewModel));
         }
 
-        [HttpPost]
-        public async Task<IActionResult> View(UpdateNurseViewModel model)
+        [HttpPut]
+        public async Task<IActionResult> EditNurse(UpdateNurseViewModel model)
         {
 
             var IdentityUser = await _dbContext.Users.FindAsync(User.Identity.Name);
@@ -68,6 +69,12 @@ namespace Egabinet.Controllers
             return RedirectToAction("Index");
 
         }
+        [HttpPost]
+        public async Task<IActionResult> DeleteVisit()
+        {
+            return View();
+
+        }
 
         [HttpPost]
         public async Task<IActionResult> AddVisit(AddVisitViewModel model)
@@ -77,14 +84,35 @@ namespace Egabinet.Controllers
                 DoctorId = model.SelectedDoctor,
                 PatientId = model.SelectedPatient,
                 Data = model.SelectedData,
+                RoomId = model.SelectedRoom,
             };
             await _dbContext.TimeSheet.AddAsync(timesheet);
 
             await _dbContext.SaveChangesAsync();
-            return RedirectToAction("Index");
+            return RedirectToAction("ShowTimesheet");
 
 
         }
+        [HttpGet]
+        public async Task<IActionResult> ShowTimesheet()
+        {
+            var viewModel = await _dbContext.TimeSheet.Select(t => new TimeSheetViewModel { Patient = t.Patient.Name, Doctor = t.Doctor.Name, Room = t.Room.Number, Date = t.Data }).ToListAsync();
+
+
+            return View(viewModel);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ShowUsers()
+        {
+            /*     var time = await _dbContext.TimeSheet.FirstOrDefaultAsync();*/
+
+            /*Employees.FirstOrDefaultAsync(x => x.Id == id);*/
+
+            return View();
+
+        }
+
 
         [HttpGet]
         public async Task<IActionResult> AddVisit()
@@ -101,6 +129,7 @@ namespace Egabinet.Controllers
             {
                 Patients = await _dbContext.Patient.Select(x => new SelectListItem($"{x.Name} {x.Surname}", x.Id)).ToListAsync(),
                 Doctors = await _dbContext.Doctor.Select(x => new SelectListItem { Text = $"{x.Name} {x.Surname}", Value = x.Id, Group = doctordic[x.SpecializationId.Trim()] }).ToListAsync(),
+                Rooms = await _dbContext.Room.Select(x => new SelectListItem($"{x.Number}", x.Id)).ToListAsync(),
 
 
             };
@@ -108,6 +137,7 @@ namespace Egabinet.Controllers
 
             return await Task.Run(() => View("AddVisit", viewModel));
         }
+
     }
 
 }

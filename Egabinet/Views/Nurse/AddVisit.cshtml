@@ -7,7 +7,7 @@
 
 
 <h1>Add Visit</h1>
-<form method="post" action="View" class="mt-5">
+<form method="post" action="AddVisit" class="mt-5">
                 <div class="form-group mt-1" id="Doctor">
         <label asp-for=SelectedDoctor>
             Selected Doctor
@@ -18,7 +18,6 @@
                 new{@class ="form-select "}
             )
             </div>
-
             <div class="form-group mt-1" id="Patient">
         <label asp-for=SelectedPatient>
             Selected Patient
@@ -29,9 +28,23 @@
                 new{@class ="form-select "}
             )
             </div>
-          
+                    <div class="form-group mt-1" id="Patient">
+        <label asp-for=SelectedRoom>
+            Selected Room
+        </label>
+        @Html.DropDownListFor(
+        x => x.SelectedRoom,
+            Model.Rooms,
+                new{@class ="form-select "}
+            )
+            </div>
 
 
+    <div class="form-group">
+        <label for="" class="form-label">Select Data</label>
+        <input type="datetime-local"min="@DateTime.Now.ToString("yyyy-MM-ddThh:mm")" class="form-control" asp-for="SelectedData">
+    </div>
 
-    <button type="submit" class="btn btn-primary">Submit</button>
+
+    <button type="submit" class="btn btn-primary">Add</button>
 </form>

@@ -3,6 +3,7 @@
 @using Microsoft.AspNetCore.Identity;
 @model IdentityUser
 @{
+
 }
 
 <div>
@@ -17,6 +18,8 @@
 <a class="btn btn-primary" asp-area="Identity" asp-page="/Account/Register">Register new User</a>
 <a class="btn btn-primary" asp-area="" asp-controller="Nurse" asp-action="EditNurse">Edit my account</a>
 <a class="btn btn-primary" asp-area="" asp-controller="Nurse" asp-action="AddVisit">Add Visit</a>
+<a class="btn btn-primary" asp-area="" asp-controller="Nurse" asp-action="ShowTimesheet">Show Timesheet</a>
+<a class="btn btn-primary" asp-area="" asp-controller="Nurse" asp-action="ShowUsers">Show Users</a>
 <style>
     .avatar {
     

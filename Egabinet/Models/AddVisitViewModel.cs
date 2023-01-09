@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
 
 namespace Egabinet.Models
@@ -20,7 +21,14 @@ namespace Egabinet.Models
 
         [Required]
         [Display(Name = "Data")]
-        public DateTime SelectedData { get; set; }
+        [BindProperty, DisplayFormat(DataFormatString = "{0:yyyy-MM-ddTHH:mm}", ApplyFormatInEditMode = true)]
+        public DateTime SelectedData { get; set; } = DateTime.Now;
+
+
+        [Required]
+        [Display(Name = "Room")]
+        public string SelectedRoom { get; set; }
+        public IEnumerable<SelectListItem> Rooms { get; set; }
 
     }
 

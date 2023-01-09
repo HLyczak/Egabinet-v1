@@ -1,0 +1,38 @@
+﻿@model IEnumerable<Egabinet.Models.TimeSheetViewModel>
+
+
+
+<h1>Dostępne Filmy w Wypożyczalni</h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.Patient)</th>
+            <th>@Html.DisplayNameFor(model => model.Doctor)</th>
+            <th>@Html.DisplayNameFor(model => model.Room)</th>
+            <th>@Html.DisplayNameFor(model => model.Date)</th>
+    <tbody>
+                @foreach (TimeSheetViewModel item in Model)
+                {
+            <tr>
+                <td>
+                            @item.Patient
+                </td>
+                <td>
+                            @item.Doctor
+                </td>
+                <td>
+                            @item.Room
+                </td>
+                <td>
+                            @item.Date
+                </td>
+                <td>                 
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+                }
+    </tbody>
+        </tr>
+    </thead>
+
+</table>

@@ -55,7 +55,7 @@ namespace Egabinet.Controllers
         public async Task<IActionResult> EditNurse(UpdateNurseViewModel model)
         {
 
-            var IdentityUser = await _dbContext.Users.FindAsync(User.Identity.Name);
+
             var nurse = await _dbContext.Nurse.FindAsync(model.Id);
 
 
@@ -70,11 +70,28 @@ namespace Egabinet.Controllers
 
         }
         [HttpPost]
-        public async Task<IActionResult> DeleteVisit()
+        public async Task<IActionResult> DeleteVisit(string id)
         {
-            return View();
+            try
+            {
+                var visitToDelete = await _dbContext.TimeSheet.FindAsync(id);
+                if (visitToDelete != null)
+                {
+                    _dbContext.TimeSheet.Remove(visitToDelete);
+                    await _dbContext.SaveChangesAsync();
+                }
+
+                return visitToDelete == null ? NotFound($"Visit with Id = {id} not found") : RedirectToAction("Index");
+
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    "Error deleting data");
+            }
 
         }
+
 
         [HttpPost]
         public async Task<IActionResult> AddVisit(AddVisitViewModel model)
@@ -96,7 +113,7 @@ namespace Egabinet.Controllers
         [HttpGet]
         public async Task<IActionResult> ShowTimesheet()
         {
-            var viewModel = await _dbContext.TimeSheet.Select(t => new TimeSheetViewModel { Patient = t.Patient.Name, Doctor = t.Doctor.Name, Room = t.Room.Number, Date = t.Data }).ToListAsync();
+            var viewModel = await _dbContext.TimeSheet.Select(t => new TimeSheetViewModel { Patient = t.Patient.Name, Doctor = t.Doctor.Name, Room = t.Room.Number, Date = t.Data, Id = t.Id }).ToListAsync();
 
 
             return View(viewModel);
@@ -139,8 +156,9 @@ namespace Egabinet.Controllers
         }
 
     }
-
 }
+
+
 
 
 

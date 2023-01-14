@@ -2,19 +2,13 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
 
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+using Egabinet.Data;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Logging;
-using Egabinet.Models.Domain;
+using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 
 namespace Egabinet.Areas.Identity.Pages.Account
 {
@@ -22,11 +16,14 @@ namespace Egabinet.Areas.Identity.Pages.Account
     {
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
+        private readonly ApplicationDbContext _dbContext;
 
-        public LoginModel(SignInManager<IdentityUser> signInManager, ILogger<LoginModel> logger)
+        public LoginModel(SignInManager<IdentityUser> signInManager, ILogger<LoginModel> logger, ApplicationDbContext _dbContext)
         {
             _signInManager = signInManager;
             _logger = logger;
+            this._dbContext = _dbContext;
+
         }
 
         /// <summary>
@@ -115,7 +112,17 @@ namespace Egabinet.Areas.Identity.Pages.Account
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
-                    _logger.LogInformation("User logged in.");
+
+                    var nurse = await _dbContext.Nurse.SingleOrDefaultAsync(n => n.User.Email == Input.Email);
+                    var doctor = await _dbContext.Doctor.SingleOrDefaultAsync(n => n.User.Email == Input.Email);
+                    var patient = await _dbContext.Patient.SingleOrDefaultAsync(n => n.User.Email == Input.Email);
+                    _logger.LogInformation(User.Identity.Name);
+                    _logger.LogInformation("!!!!!!!!!!!User logged in.");
+
+                    if (nurse != null) { return RedirectToAction("Index", "Nurse"); }
+                    if (doctor != null) { return RedirectToAction("Index", "Doctor"); }
+                    if (patient != null) { return RedirectToAction("Index", "Patient"); }
+
                     return LocalRedirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)

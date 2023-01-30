@@ -1,0 +1,13 @@
+﻿@model Egabinet.Models.UpdatePatientViewModel
+
+@{
+}
+<h1>Edit Patient</h1>
+<form method="post" action="EditPatient" class="mt-5">
+
+    <div class="mb-3">
+        <label for="" class="form-label">Address</label>
+        <input type="text" class="form-control" asp-for="Address">
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>

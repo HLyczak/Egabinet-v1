@@ -1,6 +1,8 @@
 ﻿using Egabinet.Data;
+using Egabinet.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Egabinet.Controllers
 {
@@ -18,5 +20,14 @@ namespace Egabinet.Controllers
             Microsoft.AspNetCore.Identity.IdentityUser? user = _dbContext.Users.FirstOrDefault(u => u.UserName == User.Identity.Name);
             return View(user);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> ShowTimesheet()
+        {
+            var viewModel = await _dbContext.TimeSheet.Select(t => new TimeSheetViewModel { Patient = t.Patient.Name, Doctor = t.Doctor.Name, Room = t.Room.Number, Date = t.Data, Id = t.Id }).ToListAsync();
+
+            return View(viewModel);
+        }
+
     }
 }

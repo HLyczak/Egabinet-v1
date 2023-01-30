@@ -25,8 +25,8 @@ namespace Egabinet.Controllers
         [HttpGet]
         public async Task<IActionResult> ShowTimesheet()
         {
-            var viewModel = await _dbContext.TimeSheet.Select(t => new TimeSheetViewModel { Patient = t.Patient.Name, Doctor = t.Doctor.Name, Room = t.Room.Number, Date = t.Data, Id = t.Id }).ToListAsync();
-
+            var user = _dbContext.Users.FirstOrDefault(u => u.UserName == User.Identity.Name);
+            var viewModel = await _dbContext.TimeSheet.Where(t => t.Patient.UserId == user.Id).Select(t => new TimeSheetViewModel { Patient = t.Patient.Name, Doctor = t.Doctor.Name, Room = t.Room.Number, Date = t.Data, Id = t.Id }).ToListAsync();
 
             return View(viewModel);
         }
@@ -50,6 +50,45 @@ namespace Egabinet.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError,
                     "Error deleting data");
             }
+
+        }
+        //edit
+        [HttpGet]
+        public async Task<IActionResult> EditPatient()
+
+        {
+            if (User.Identity == null)
+            {
+                return RedirectToAction("Index");
+            }
+
+            var patient = await _dbContext.Patient.FirstOrDefaultAsync(u => u.User.UserName == User.Identity.Name);
+
+            if (patient == null)
+            {
+                return RedirectToAction("Index");
+            }
+
+            UpdatePatientViewModel viewModel = new UpdatePatientViewModel()
+            {
+                Id = patient.Id,
+                Address = patient.Address,
+            };
+
+            return await Task.Run(() => View("EditPatient", viewModel));
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> EditPatient(UpdatePatientViewModel model)
+        {
+
+            var patient = await _dbContext.Patient.FindAsync(model.Id);
+            patient.Address = model.Address;
+
+
+            await _dbContext.SaveChangesAsync();
+
+            return RedirectToAction("Index");
 
         }
     }

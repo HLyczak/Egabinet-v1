@@ -6,6 +6,34 @@
 
 <h1>Patient</h1>
 
+<div>
+    <div class=" nav-link text-dark">@User.Identity?.Name!</div>
+</div>
+
+
+<div>
+
+    <img src="~/images/patient.png" class="avatar mb-3">
+</div>
+
+<form>
+    <div class="form-group mb-2">
+        <label for="exampleFormControlFile1">Addt</label>
+        <input type="file" class="form-control-file" id="exampleFormControlFile1">
+    </div>
+</form>
+
 
 <a class="btn btn-primary" asp-area="" asp-controller="Patient" asp-action="ShowTimesheet">Show Timesheet</a>
+<a class="btn btn-primary" asp-area="" asp-controller="Patient" asp-action="EditPatient">Edit my account</a>
+
+
+<style>
+    .avatar {
+        border-radius: 50%;
+        height: 100px;
+        with: 100px;
+    }
+
+</style>
 

@@ -15,7 +15,10 @@ namespace Egabinet.Controllers
         public NurseController(ApplicationDbContext _dbContext)
         {
             this._dbContext = _dbContext;
+
+
         }
+
 
         [Authorize]
         public IActionResult Index()
@@ -122,12 +125,13 @@ namespace Egabinet.Controllers
         [HttpGet]
         public async Task<IActionResult> ShowUsers()
         {
-            /*     var time = await _dbContext.TimeSheet.FirstOrDefaultAsync();*/
+            var nurse = await _dbContext.Nurse.Select(n => new ShowUsersViewModel { UserName = $"{n.Name} {n.Surname} ", Role = "Nurse" }).ToListAsync();
+            var patient = await _dbContext.Patient.Select(n => new ShowUsersViewModel { UserName = $"{n.Name} {n.Surname} ", Role = "Patient" }).ToListAsync();
+            var doctor = await _dbContext.Doctor.Select(n => new ShowUsersViewModel { UserName = $"{n.Name} {n.Surname} ", Role = "Doctor" }).ToListAsync();
+            var viewModelUser = nurse.Concat(patient).Concat(doctor);
 
-            /*Employees.FirstOrDefaultAsync(x => x.Id == id);*/
 
-            return View();
-
+            return View(viewModelUser);
         }
 
 

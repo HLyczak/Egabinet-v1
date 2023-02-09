@@ -2,13 +2,9 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
 
-using System;
-using System.Threading.Tasks;
-using Egabinet.Models.Domain;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Logging;
 
 namespace Egabinet.Areas.Identity.Pages.Account.Manage
 {
@@ -40,12 +36,9 @@ namespace Egabinet.Areas.Identity.Pages.Account.Manage
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
 
-            if (!await _userManager.GetTwoFactorEnabledAsync(user))
-            {
-                throw new InvalidOperationException($"Cannot disable 2FA for user as it's not currently enabled.");
-            }
-
-            return Page();
+            return !await _userManager.GetTwoFactorEnabledAsync(user)
+                ? throw new InvalidOperationException($"Cannot disable 2FA for user as it's not currently enabled.")
+                : (IActionResult)Page();
         }
 
         public async Task<IActionResult> OnPostAsync()

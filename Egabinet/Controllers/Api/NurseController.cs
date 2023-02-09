@@ -1,6 +1,6 @@
-﻿using Egabinet.Data;
+﻿using Core.Domain;
+using Egabinet.Data;
 using Egabinet.Models;
-using Egabinet.Models.Domain;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 

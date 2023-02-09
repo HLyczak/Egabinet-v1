@@ -2,22 +2,17 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
 
-using System;
-using System.ComponentModel.DataAnnotations;
-using System.Security.Claims;
-using System.Text;
-using System.Text.Encodings.Web;
-using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
-using Microsoft.Extensions.Logging;
-using Egabinet.Models.Domain;
+using System.ComponentModel.DataAnnotations;
+using System.Security.Claims;
+using System.Text;
+using System.Text.Encodings.Web;
+
 
 namespace Egabinet.Areas.Identity.Pages.Account
 {
@@ -86,7 +81,7 @@ namespace Egabinet.Areas.Identity.Pages.Account
             [EmailAddress]
             public string Email { get; set; }
         }
-        
+
         public IActionResult OnGet() => RedirectToPage("./Login");
 
         public IActionResult OnPost(string provider, string returnUrl = null)
@@ -214,11 +209,9 @@ namespace Egabinet.Areas.Identity.Pages.Account
 
         private IUserEmailStore<IdentityUser> GetEmailStore()
         {
-            if (!_userManager.SupportsUserEmail)
-            {
-                throw new NotSupportedException("The default UI requires a user store with email support.");
-            }
-            return (IUserEmailStore<IdentityUser>)_userStore;
+            return !_userManager.SupportsUserEmail
+                ? throw new NotSupportedException("The default UI requires a user store with email support.")
+                : (IUserEmailStore<IdentityUser>)_userStore;
         }
     }
 }

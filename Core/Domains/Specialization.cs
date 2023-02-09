@@ -1,16 +1,14 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Egabinet.Models.Domain
+namespace Core.Domain
 {
-    public class Room
+    public class Specialization
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string Id { get; set; }
 
-        public long Number { get; set; }
-
-        public ICollection<TimeSheet> TimeSheet { get; set; }
+        public string Value { get; set; }
     }
 }

@@ -119,11 +119,11 @@ namespace Egabinet.Areas.Identity.Pages.Account
                     _logger.LogInformation(User.Identity.Name);
                     _logger.LogInformation("!!!!!!!!!!!User logged in.");
 
-                    if (nurse != null) { return RedirectToAction("Index", "Nurse"); }
-                    if (doctor != null) { return RedirectToAction("Index", "Doctor"); }
-                    if (patient != null) { return RedirectToAction("Index", "Patient"); }
-
-                    return LocalRedirect(returnUrl);
+                    return nurse != null
+                        ? RedirectToAction("Index", "Nurse")
+                        : doctor != null
+                        ? RedirectToAction("Index", "Doctor")
+                        : patient != null ? RedirectToAction("Index", "Patient") : LocalRedirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)
                 {

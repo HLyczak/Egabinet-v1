@@ -2,14 +2,9 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
 
-using System;
-using System.Linq;
-using System.Threading.Tasks;
-using Egabinet.Models.Domain;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Logging;
 
 namespace Egabinet.Areas.Identity.Pages.Account.Manage
 {
@@ -49,12 +44,9 @@ namespace Egabinet.Areas.Identity.Pages.Account.Manage
             }
 
             var isTwoFactorEnabled = await _userManager.GetTwoFactorEnabledAsync(user);
-            if (!isTwoFactorEnabled)
-            {
-                throw new InvalidOperationException($"Cannot generate recovery codes for user because they do not have 2FA enabled.");
-            }
-
-            return Page();
+            return !isTwoFactorEnabled
+                ? throw new InvalidOperationException($"Cannot generate recovery codes for user because they do not have 2FA enabled.")
+                : (IActionResult)Page();
         }
 
         public async Task<IActionResult> OnPostAsync()

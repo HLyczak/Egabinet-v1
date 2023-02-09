@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Egabinet.Models.Domain
+namespace Core.Domain
 {
     public class Patient
     {
@@ -23,7 +23,7 @@ namespace Egabinet.Models.Domain
 
         [Required]
         public long _pesel;
-     
+
 
         public long Pesel
         {

@@ -1,9 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Data;
 
-namespace Egabinet.Models.Domain
+namespace Core.Domain
 {
     public class Nurse
     {

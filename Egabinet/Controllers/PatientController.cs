@@ -78,10 +78,13 @@ namespace Egabinet.Controllers
             return await Task.Run(() => View("EditPatient", viewModel));
         }
 
-        [HttpPut]
+        [HttpPost]
         public async Task<IActionResult> EditPatient(UpdatePatientViewModel model)
         {
-
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
             var patient = await _dbContext.Patient.FindAsync(model.Id);
             patient.Address = model.Address;
 

@@ -47,6 +47,7 @@ namespace Egabinet.Controllers
             {
                 Id = nurse.Id,
                 Surname = nurse.Surname,
+                Name = nurse.Name,
                 Address = nurse.Address,
                 PermissionNumber = nurse.PermissionNumber
             };
@@ -54,25 +55,29 @@ namespace Egabinet.Controllers
             return await Task.Run(() => View("EditNurse", viewModel));
         }
 
-        [HttpPut]
+        [HttpPost]
         public async Task<IActionResult> EditNurse(UpdateNurseViewModel model)
         {
-
-
             var nurse = await _dbContext.Nurse.FindAsync(model.Id);
+
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
 
 
             nurse.Surname = model.Surname;
             nurse.Address = model.Address;
             nurse.PermissionNumber = model.PermissionNumber;
-
+            nurse.Name = model.Name;
 
             await _dbContext.SaveChangesAsync();
-
             return RedirectToAction("Index");
+
 
         }
         [HttpPost]
+
         public async Task<IActionResult> DeleteVisit(string id)
         {
             try

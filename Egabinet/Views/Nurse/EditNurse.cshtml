@@ -3,22 +3,35 @@
 @{
 }
 <h1>Edit Nurse</h1>
-<form method="put" action="EditNurse" class="mt-5">
+<form method="post" action="EditNurse" class="mt-5">
     <div class="mb-3">
         <label for="" class="form-label">Id</label>
-        <input type="email" class="form-control" asp-for="Id" readonly>
+        <input type="text" class="form-control" asp-for="Id" readonly>
+        <span asp-validation-for="Id" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label for="" class="form-label">Name</label>
+        <input type="text" class="form-control" asp-for="Name">
+        <span asp-validation-for="Name" class="text-danger"></span>
     </div>
     <div class="mb-3">
         <label for="" class="form-label">Surname</label>
         <input type="text" class="form-control" asp-for="Surname">
+        <span asp-validation-for="Surname" class="text-danger"></span>
     </div>
     <div class="mb-3">
         <label for="" class="form-label">Address</label>
         <input type="text" class="form-control" asp-for="Address">
+        <span asp-validation-for="Address" class="text-danger"></span>
     </div>
     <div class="mb-3">
         <label for="" class="form-label">Permission Number</label>
         <input type="text" class="form-control" asp-for="PermissionNumber">
+        <span asp-validation-for="PermissionNumber" class="text-danger"></span>
     </div>
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

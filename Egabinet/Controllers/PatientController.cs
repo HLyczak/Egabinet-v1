@@ -1,4 +1,4 @@
-﻿using Egabinet.Data;
+﻿using Core.Repositories;
 using Egabinet.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -8,61 +8,54 @@ namespace Egabinet.Controllers
 {
     public class PatientController : Controller
     {
-        private readonly ApplicationDbContext _dbContext;
+        private readonly IPatientRepository patientRepository;
+        private readonly IUserRepository userRepository;
+        private readonly ITimesheetRepository timesheetRepository;
 
-        public PatientController(ApplicationDbContext _dbContext)
+
+        public PatientController(IPatientRepository patientRepository, IUserRepository userRepository, ITimesheetRepository timesheetRepository)
         {
-            this._dbContext = _dbContext;
+            this.patientRepository = patientRepository;
+            this.userRepository = userRepository;
+            this.timesheetRepository = timesheetRepository;
         }
 
         [Authorize]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            Microsoft.AspNetCore.Identity.IdentityUser? user = _dbContext.Users.FirstOrDefault(u => u.UserName == User.Identity.Name);
+            var user = await userRepository.GetByNameAsync(User.Identity.Name);
             return View(user);
         }
 
         [HttpGet]
         public async Task<IActionResult> ShowTimesheet()
         {
-            var user = _dbContext.Users.FirstOrDefault(u => u.UserName == User.Identity.Name);
-            var viewModel = await _dbContext.TimeSheet.Where(t => t.Patient.UserId == user.Id).Select(t => new TimeSheetViewModel { Patient = t.Patient.Name, Doctor = t.Doctor.Name, Room = t.Room.Number, Date = t.Data, Id = t.Id }).ToListAsync();
+
+            var user = await patientRepository.GetByNameAsync(User.Identity.Name);
+            var viewModel = await timesheetRepository.GetAllByPatientIdAsync(user.Id).Select(t => new TimeSheetViewModel { Patient = t.Patient.Name, Doctor = t.Doctor.Name, Room = t.Room.Number, Date = t.Data, Id = t.Id }).ToListAsync();
 
             return View(viewModel);
         }
+
         [HttpPost]
         public async Task<IActionResult> DeleteVisit(string id)
         {
-            try
+            var visitToDelete = await timesheetRepository.GetByIdAsync(id);
+            if (visitToDelete != null)
             {
-                var visitToDelete = await _dbContext.TimeSheet.FindAsync(id);
-                if (visitToDelete != null)
-                {
-                    _dbContext.TimeSheet.Remove(visitToDelete);
-                    await _dbContext.SaveChangesAsync();
-                }
-
-                return visitToDelete == null ? NotFound($"Visit with Id = {id} not found") : RedirectToAction("Index");
-
-            }
-            catch (Exception)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError,
-                    "Error deleting data");
+                await timesheetRepository.RemoveAsync(id);
             }
 
+            return visitToDelete == null ? NotFound($"Visit with Id = {id} not found") : RedirectToAction("Index");
         }
         //edit
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> EditPatient()
 
         {
-            if (User.Identity == null)
-            {
-                return RedirectToAction("Index");
-            }
 
-            var patient = await _dbContext.Patient.FirstOrDefaultAsync(u => u.User.UserName == User.Identity.Name);
+            var patient = await patientRepository.GetByNameAsync(User.Identity.Name);
 
             if (patient == null)
             {
@@ -75,7 +68,7 @@ namespace Egabinet.Controllers
                 Address = patient.Address,
             };
 
-            return await Task.Run(() => View("EditPatient", viewModel));
+            return View("EditPatient", viewModel);
         }
 
         [HttpPost]
@@ -85,11 +78,11 @@ namespace Egabinet.Controllers
             {
                 return View(model);
             }
-            var patient = await _dbContext.Patient.FindAsync(model.Id);
+            var patient = await patientRepository.GetByIdAsync(model.Id);
             patient.Address = model.Address;
 
 
-            await _dbContext.SaveChangesAsync();
+            await patientRepository.UpdateAsync(patient);
 
             return RedirectToAction("Index");
 

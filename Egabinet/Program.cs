@@ -1,3 +1,4 @@
+using Core.Repositories;
 using Egabinet.Data;
 using Egabinet.Services;
 using Microsoft.AspNetCore.Identity;
@@ -18,6 +19,12 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => options.Sign
         .AddDefaultUI()
         .AddDefaultTokenProviders();
 builder.Services.AddTransient<IEmailSender, EmailSender>();
+builder.Services.AddTransient<INurseRepository, NurseRepository>();
+builder.Services.AddTransient<IPatientRepository, PatientRepository>();
+builder.Services.AddTransient<IDoctorRepository, DoctorRepository>();
+builder.Services.AddTransient<ITimesheetRepository, TimeSheetRepository>();
+builder.Services.AddTransient<IRoomRepository, RoomRepository>();
+builder.Services.AddTransient<IUserRepository, UserRepository>();
 builder.Services.AddControllersWithViews();
 
 

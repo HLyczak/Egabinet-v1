@@ -1,5 +1,5 @@
 ﻿using Core.Domain;
-using Egabinet.Data;
+using Core.Repositories;
 using Egabinet.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -10,33 +10,38 @@ namespace Egabinet.Controllers
 {
     public class NurseController : Controller
     {
-        private readonly ApplicationDbContext _dbContext;
+        private readonly INurseRepository nurseRepository;
+        private readonly IPatientRepository patientRepository;
+        private readonly IUserRepository userRepository;
+        private readonly IDoctorRepository doctorRepository;
+        private readonly ITimesheetRepository timesheetRepository;
+        private readonly IRoomRepository roomRepository;
 
-        public NurseController(ApplicationDbContext _dbContext)
+
+        public NurseController(INurseRepository nurseRepository, IPatientRepository patientRepository, IUserRepository userRepository, IDoctorRepository doctorRepository, ITimesheetRepository timesheetRepository, IRoomRepository roomRepository)
         {
-            this._dbContext = _dbContext;
-
-
+            this.nurseRepository = nurseRepository;
+            this.patientRepository = patientRepository;
+            this.userRepository = userRepository;
+            this.doctorRepository = doctorRepository;
+            this.timesheetRepository = timesheetRepository;
+            this.roomRepository = roomRepository;
         }
 
-
         [Authorize]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            Microsoft.AspNetCore.Identity.IdentityUser? user = _dbContext.Users.FirstOrDefault(u => u.UserName == User.Identity.Name);
+
+            var user = await userRepository.GetByNameAsync(User.Identity.Name);
             return View(user);
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> EditNurse()
 
         {
-            if (User.Identity == null)
-            {
-                return RedirectToAction("Index");
-            }
-
-            var nurse = await _dbContext.Nurse.FirstOrDefaultAsync(u => u.User.UserName == User.Identity.Name);
+            var nurse = await nurseRepository.GetByNameAsync(User.Identity.Name);
 
             if (nurse == null)
             {
@@ -52,13 +57,13 @@ namespace Egabinet.Controllers
                 PermissionNumber = nurse.PermissionNumber
             };
 
-            return await Task.Run(() => View("EditNurse", viewModel));
+            return View("EditNurse", viewModel);
         }
 
         [HttpPost]
         public async Task<IActionResult> EditNurse(UpdateNurseViewModel model)
         {
-            var nurse = await _dbContext.Nurse.FindAsync(model.Id);
+            var nurse = await nurseRepository.GetByIdAsync(model.Id);
 
             if (!ModelState.IsValid)
             {
@@ -71,7 +76,7 @@ namespace Egabinet.Controllers
             nurse.PermissionNumber = model.PermissionNumber;
             nurse.Name = model.Name;
 
-            await _dbContext.SaveChangesAsync();
+            await nurseRepository.UpdateAsync(nurse);
             return RedirectToAction("Index");
 
 
@@ -80,24 +85,14 @@ namespace Egabinet.Controllers
 
         public async Task<IActionResult> DeleteVisit(string id)
         {
-            try
-            {
-                var visitToDelete = await _dbContext.TimeSheet.FindAsync(id);
-                if (visitToDelete != null)
-                {
-                    _dbContext.TimeSheet.Remove(visitToDelete);
-                    await _dbContext.SaveChangesAsync();
-                }
 
-                return visitToDelete == null ? NotFound($"Visit with Id = {id} not found") : RedirectToAction("Index");
-
-            }
-            catch (Exception)
+            var visitToDelete = await timesheetRepository.GetByIdAsync(id);
+            if (visitToDelete != null)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError,
-                    "Error deleting data");
+                await timesheetRepository.RemoveAsync(id);
             }
 
+            return visitToDelete == null ? NotFound($"Visit with Id = {id} not found") : RedirectToAction("Index");
         }
 
 
@@ -111,9 +106,9 @@ namespace Egabinet.Controllers
                 Data = model.SelectedData,
                 RoomId = model.SelectedRoom,
             };
-            await _dbContext.TimeSheet.AddAsync(timesheet);
 
-            await _dbContext.SaveChangesAsync();
+            await timesheetRepository.AddAsync(timesheet);
+
             return RedirectToAction("ShowTimesheet");
 
 
@@ -121,8 +116,8 @@ namespace Egabinet.Controllers
         [HttpGet]
         public async Task<IActionResult> ShowTimesheet()
         {
-            var viewModel = await _dbContext.TimeSheet.Select(t => new TimeSheetViewModel { Patient = t.Patient.Name, Doctor = t.Doctor.Name, Room = t.Room.Number, Date = t.Data, Id = t.Id }).ToListAsync();
 
+            var viewModel = await timesheetRepository.GetAllAsync().Select(t => new TimeSheetViewModel { Patient = t.Patient.Name, Doctor = t.Doctor.Name, Room = t.Room.Number, Date = t.Data, Id = t.Id }).ToListAsync();
 
             return View(viewModel);
         }
@@ -130,9 +125,9 @@ namespace Egabinet.Controllers
         [HttpGet]
         public async Task<IActionResult> ShowUsers()
         {
-            var nurse = await _dbContext.Nurse.Select(n => new ShowUsersViewModel { UserName = $"{n.Name} {n.Surname} ", Role = "Nurse" }).ToListAsync();
-            var patient = await _dbContext.Patient.Select(n => new ShowUsersViewModel { UserName = $"{n.Name} {n.Surname} ", Role = "Patient" }).ToListAsync();
-            var doctor = await _dbContext.Doctor.Select(n => new ShowUsersViewModel { UserName = $"{n.Name} {n.Surname} ", Role = "Doctor" }).ToListAsync();
+            var nurse = (await nurseRepository.GetAllAsync()).Select(n => new ShowUsersViewModel { UserName = $"{n.Name} {n.Surname} ", Role = "Nurse" });
+            var patient = (await patientRepository.GetAllAsync()).Select(n => new ShowUsersViewModel { UserName = $"{n.Name} {n.Surname} ", Role = "Patient" });
+            var doctor = (await doctorRepository.GetAllAsync()).Select(n => new ShowUsersViewModel { UserName = $"{n.Name} {n.Surname} ", Role = "Doctor" });
             var viewModelUser = nurse.Concat(patient).Concat(doctor);
 
 
@@ -153,11 +148,9 @@ namespace Egabinet.Controllers
 
             AddVisitViewModel viewModel = new AddVisitViewModel()
             {
-                Patients = await _dbContext.Patient.Select(x => new SelectListItem($"{x.Name} {x.Surname}", x.Id)).ToListAsync(),
-                Doctors = await _dbContext.Doctor.Select(x => new SelectListItem { Text = $"{x.Name} {x.Surname}", Value = x.Id, Group = doctordic[x.SpecializationId.Trim()] }).ToListAsync(),
-                Rooms = await _dbContext.Room.Select(x => new SelectListItem($"{x.Number}", x.Id)).ToListAsync(),
-
-
+                Patients = (await patientRepository.GetAllAsync()).Select(x => new SelectListItem($"{x.Name} {x.Surname}", x.Id)),
+                Doctors = (await doctorRepository.GetAllAsync()).Select(x => new SelectListItem { Text = $"{x.Name} {x.Surname}", Value = x.Id, Group = doctordic[x.SpecializationId.Trim()] }),
+                Rooms = (await roomRepository.GetAllAsync()).Select(x => new SelectListItem($"{x.Number}", x.Id)),
             };
 
 

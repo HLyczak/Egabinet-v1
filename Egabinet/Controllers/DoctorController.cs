@@ -1,40 +1,30 @@
-﻿using Core.Repositories;
-using Egabinet.Models;
+﻿using Egabinet.Models;
+using Egabinet.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace Egabinet.Controllers
 {
     public class DoctorController : Controller
     {
+        private readonly IDoctorService doctorService;
 
-        private readonly IDoctorRepository doctorRepository;
-        private readonly ITimesheetRepository timesheetRepository;
-        private readonly IUserRepository userRepository;
-
-
-        public DoctorController(IDoctorRepository doctorRepository, ITimesheetRepository timesheetRepository, IUserRepository userRepository)
+        public DoctorController(IDoctorService doctorService)
         {
-
-            this.doctorRepository = doctorRepository;
-            this.timesheetRepository = timesheetRepository;
-            this.userRepository = userRepository;
-
+            this.doctorService = doctorService;
         }
 
         [Authorize]
         public async Task<IActionResult> Index()
         {
-            var user = await userRepository.GetByNameAsync(User.Identity.Name);
-            return View(user);
+            var doctor = await doctorService.GetDoctorAsync(User.Identity.Name);
+            return View(doctor);
         }
 
         [HttpGet]
         public async Task<IActionResult> ShowTimesheet()
         {
-            var user = await doctorRepository.GetByNameAsync(User.Identity.Name);
-            var viewModel = await timesheetRepository.GetAllByPatientIdAsync(user.Id).Select(t => new TimeSheetViewModel { Patient = t.Patient.Name, Doctor = t.Doctor.Name, Room = t.Room.Number, Date = t.Data, Id = t.Id }).ToListAsync();
+            var viewModel = await doctorService.ShowTimesheet(User.Identity.Name);
             return View(viewModel);
         }
 
@@ -42,23 +32,7 @@ namespace Egabinet.Controllers
         [HttpGet]
         public async Task<IActionResult> EditDoctor()
         {
-
-            var doctor = await doctorRepository.GetByNameAsync(User.Identity.Name);
-
-            if (doctor == null)
-            {
-                return RedirectToAction("Index");
-            }
-
-            UpdateDoctorViewModel viewModel = new UpdateDoctorViewModel()
-            {
-                Id = doctor.Id,
-                Surname = doctor.Surname,
-                Adress = doctor.Adress,
-                Name = doctor.Name,
-                PermissionNumber = doctor.PermissionNumber
-            };
-
+            var viewModel = await doctorService.GetUpdateDoctorViewModel(User.Identity.Name);
             return View("EditDoctor", viewModel);
         }
 
@@ -69,16 +43,9 @@ namespace Egabinet.Controllers
             {
                 return View(model);
             }
-            var doctor = await doctorRepository.GetByIdAsync(model.Id);
-            doctor.Surname = model.Surname;
-            doctor.Name = model.Name;
-            doctor.Adress = model.Adress;
-            doctor.PermissionNumber = model.PermissionNumber;
+            await doctorService.UpdateDoctorAsync(model);
 
-            await doctorRepository.UpdateAsync(doctor);
             return RedirectToAction("Index");
-
         }
-
     }
 }

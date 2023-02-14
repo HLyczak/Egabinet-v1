@@ -31,7 +31,10 @@ namespace Core.Repositories
         {
             return _dbContext.TimeSheet.Where(t => t.Patient.UserId == id);
         }
-
+        public IQueryable<TimeSheet> GetAllByDoctorIdAsync(string id)
+        {
+            return _dbContext.TimeSheet.Where(t => t.Doctor.UserId == id);
+        }
         public async Task<TimeSheet> GetByIdAsync(string id)
         {
             return await _dbContext.TimeSheet.FirstOrDefaultAsync(u => u.Id == id);

@@ -25,6 +25,9 @@ builder.Services.AddTransient<IDoctorRepository, DoctorRepository>();
 builder.Services.AddTransient<ITimesheetRepository, TimeSheetRepository>();
 builder.Services.AddTransient<IRoomRepository, RoomRepository>();
 builder.Services.AddTransient<IUserRepository, UserRepository>();
+builder.Services.AddTransient<INurseService, NurseService>();
+builder.Services.AddTransient<IDoctorService, DoctorService>();
+builder.Services.AddTransient<IPatientService, PatientService>();
 builder.Services.AddControllersWithViews();
 
 

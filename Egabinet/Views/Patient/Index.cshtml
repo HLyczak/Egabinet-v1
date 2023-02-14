@@ -1,21 +1,17 @@
-﻿@page
-@using Core.Domain;
-@using Microsoft.AspNetCore.Identity;
-@model IdentityUser
-
-
-<h1>Patient</h1>
+﻿@model Egabinet.Models.PatientViewModel;
 
 <div>
-    <div class=" nav-link text-dark">@User.Identity?.Name!</div>
+    <h2>Patient account</h2>
+    <h4>@DateTime.Now.ToLongDateString()</h4>
 </div>
-
-
-<div>
-
-    <img src="~/images/patient.png" class="avatar mb-3">
+<div class="header">
+    <div>
+        <img src="~/images/patient.png" class="avatar mb-3">
+    </div>
+    <div>
+        <div>Patient: @Model.Name @Model.Surname</div>
+    </div>
 </div>
-
 <form>
     <div class="form-group mb-2">
         <label for="exampleFormControlFile1">Upload Avatar</label>
@@ -23,17 +19,50 @@
     </div>
 </form>
 
-
-<a class="btn btn-primary" asp-area="" asp-controller="Patient" asp-action="ShowTimesheet">Show Timesheet</a>
-<a class="btn btn-primary" asp-area="" asp-controller="Patient" asp-action="EditPatient">Edit my account</a>
+<div class="buttons">
+    <a class="button-card" asp-area="" asp-controller="Patient" asp-action="ShowTimesheet">Show Timesheet</a>
+    <a class="button-card" asp-area="" asp-controller="Patient" asp-action="EditPatient">Edit my account</a>
+</div>
 
 
 <style>
     .avatar {
         border-radius: 50%;
-        height: 100px;
-        with: 100px;
+        height: 120px;
     }
 
-</style>
+    .header {
+        display: flex;
+        gap: 16px;
+        align-items: center;
+        font-size: 20px;
+        margin-bottom: 30px;
+        margin-top: 30px;
+        font-weight: 600;
+    }
 
+    .buttons {
+        margin-top: 70px;
+        display: flex;
+        gap: 16px;
+    }
+
+    .button-card {
+        width: 200px;
+        height: 100px;
+        background-color: #7debdd;
+        font-size: 20px;
+        font-weight: 600;
+        border-radius: 4px;
+        text-decoration: auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: white;
+    }
+
+    .button-card:hover {
+        background-color: #64d6c7;
+        color: white;
+    }
+</style>

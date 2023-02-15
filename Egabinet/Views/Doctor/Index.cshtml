@@ -1,29 +1,21 @@
 ﻿@model Egabinet.Models.DoctorViewModel;
 
 <div>
-<h2>Doctor account</h2>
+    <h2>Doctor account</h2>
     <h4>@DateTime.Now.ToLongDateString()</h4>
 </div>
 <div class="header">
     <div>
-    <img src="~/images/doctor.png" class="avatar mb-3">
+        <img src="~/images/doctor.png" class="avatar mb-3">
     </div>
-   <div>
+    <div>
         <div>Doctor: @Model.Name @Model.Surname</div>
         <div>Permission number: @Model.PermissionNumber</div>
-   </div>
-</div>
-<form>
-    <div class="form-group mb-2">
-        <label for="exampleFormControlFile1">Upload Avatar</label>
-        <input type="file" class="form-control-file" id="exampleFormControlFile1">
     </div>
-</form>
-
+</div>
 <div class="buttons">
     <a class="button-card" asp-area="" asp-controller="Doctor" asp-action="ShowTimesheet">Show Timesheet</a>
     <a class="button-card" asp-area="" asp-controller="Doctor" asp-action="EditDoctor">Edit my account</a>
-
 </div>
 
 

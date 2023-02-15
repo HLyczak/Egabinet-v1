@@ -1,24 +1,18 @@
 ﻿@model Egabinet.Models.NurseViewModel;
 
 <div>
-<h2>Nurse account</h2>
+    <h2>Nurse account</h2>
     <h4>@DateTime.Now.ToLongDateString()</h4>
 </div>
 <div class="header">
     <div>
         <img src="~/images/nurse.png" class="avatar mb-3">
     </div>
-   <div>
+    <div>
         <div>Nurse: @Model.Name @Model.Surname</div>
         <div>Permission number: @Model.PermissionNumber</div>
-   </div>
-</div>
-<form>
-    <div class="form-group mb-2">
-        <label for="exampleFormControlFile1">Upload Avatar</label>
-        <input type="file" class="form-control-file" id="exampleFormControlFile1">
     </div>
-</form>
+</div>
 
 <div class="buttons">
     <a class="button-card" asp-area="Identity" asp-page="/Account/Register">Register new User</a>
@@ -64,8 +58,8 @@
         color: white;
     }
 
-    .button-card:hover {
-        background-color: #64d6c7;
+        .button-card:hover {
+            background-color: #64d6c7;
             color: white;
-     }
+        }
 </style>

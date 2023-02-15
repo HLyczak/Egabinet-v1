@@ -25,7 +25,6 @@ namespace Egabinet.Services
             this.timesheetRepository = timesheetRepository;
             this.roomRepository = roomRepository;
             this.patientRepository = patientRepository;
-
             this.doctorRepository = doctorRepository;
         }
 

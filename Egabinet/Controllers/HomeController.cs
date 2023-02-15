@@ -1,4 +1,5 @@
 ﻿using Egabinet.Models;
+using Egabinet.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -6,16 +7,23 @@ namespace Egabinet.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        private readonly IUserService userService;
+
+        public HomeController(IUserService userService)
         {
-            _logger = logger;
+            this.userService = userService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var role = await userService.GetUserRole(User?.Identity?.Name);
+
+            if (role == "nurse")
+            {
+                return RedirectToAction("Index", "Nurse");
+            }
+            return role == "patient" ? RedirectToAction("Index", "Patient") : role == "doctor" ? RedirectToAction("Index", "Doctor") : View();
         }
 
 

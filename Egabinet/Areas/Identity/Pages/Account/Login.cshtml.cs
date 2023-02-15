@@ -116,8 +116,6 @@ namespace Egabinet.Areas.Identity.Pages.Account
                     var nurse = await _dbContext.Nurse.SingleOrDefaultAsync(n => n.User.Email == Input.Email);
                     var doctor = await _dbContext.Doctor.SingleOrDefaultAsync(n => n.User.Email == Input.Email);
                     var patient = await _dbContext.Patient.SingleOrDefaultAsync(n => n.User.Email == Input.Email);
-                    _logger.LogInformation(User.Identity.Name);
-                    _logger.LogInformation("!!!!!!!!!!!User logged in.");
 
                     return nurse != null
                         ? RedirectToAction("Index", "Nurse")

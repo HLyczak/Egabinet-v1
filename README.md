@@ -28,7 +28,7 @@ dotnet run
 wejdź na: https://localhost:7253/
 ```
 Przykładowi użytkownicy:
-* pielęgniarka: 
-* pacjnet: 
-* doktor: 
+* pielęgniarka: user5@op.pl
+* pacjnet: user1@op.pl
+* doktor: user10@op.pl
 

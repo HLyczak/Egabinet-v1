@@ -23,6 +23,9 @@ pacjent, pielęgniarka, lekarz.
 ### Uruchomienie:
 ```
 git clone https://github.com/HLyczak/Egabinet.git
+cd Egabinet/Egabinet 
+dotnet run
+wejdź na: https://localhost:7253/
 ```
 Przykładowi użytkownicy:
 * pielęgniarka: 

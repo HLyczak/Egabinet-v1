@@ -24,5 +24,8 @@ pacjent, pielęgniarka, lekarz.
 ```
 git clone https://github.com/HLyczak/Egabinet.git
 ```
-
+Przykładowi użytkownicy:
+* pielęgniarka: 
+* pacjnet: 
+* doktor: 
 

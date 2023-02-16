@@ -7,7 +7,8 @@
 pacjent, pielęgniarka, lekarz.
 * dodawanie / usuwanie wizyt w przychodni,
 * zmiana danych użytkownika,
-* wyświetlanie listy wizyt i użytkowników.
+* wyświetlanie listy wizyt i użytkowników,
+* oddzielne widoki dla poszczególnych ról.
 
 ### Technologie:
 * ASP.NET CORE MVC
@@ -28,7 +29,7 @@ dotnet run
 wejdź na: https://localhost:7253/
 ```
 Przykładowi użytkownicy:
-* pielęgniarka: user5@op.pl
-* pacjnet: user1@op.pl
-* doktor: user10@op.pl
+* pielęgniarka: user5@op.pl hasło: Admin123!
+* pacjnet: user1@op.pl hasło: Admin123!
+* doktor: user10@op.pl hasło: Admin123!
 

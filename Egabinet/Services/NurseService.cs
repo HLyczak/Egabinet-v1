@@ -30,7 +30,7 @@ namespace Egabinet.Services
 
         public async Task DeleteVisitAsync(string id)
         {
-            var visitToDelete = await timesheetRepository.GetByIdAsync(id);
+            TimeSheet visitToDelete = await timesheetRepository.GetByIdAsync(id);
 
             if (visitToDelete == null)
             {
@@ -41,7 +41,7 @@ namespace Egabinet.Services
 
         public async Task AddVisit(AddVisitViewModel model)
         {
-            var timesheet = new TimeSheet()
+            TimeSheet timesheet = new TimeSheet()
             {
                 DoctorId = model.SelectedDoctor,
                 PatientId = model.SelectedPatient,
@@ -54,7 +54,7 @@ namespace Egabinet.Services
 
         public async Task<AddVisitViewModel> GetAddVisitViewModel()
         {
-            var doctordic = new Dictionary<string, SelectListGroup>()
+            Dictionary<string, SelectListGroup> doctordic = new Dictionary<string, SelectListGroup>()
             {
                 { "6a3d526e-1fb6-4de7-bde5-e0754fc58aec", new SelectListGroup { Name = "Lekarz Rodzinny" } },
                 { "4e8effeb-0a99-4038-9420-0c543a3a28ac", new SelectListGroup { Name = "Endokrynolog" } },
@@ -74,7 +74,7 @@ namespace Egabinet.Services
 
         public async Task<UpdateNurseViewModel> GetUpdateNurseViewModel(string name)
         {
-            var nurse = await nurseRepository.GetByNameAsync(name);
+            Nurse nurse = await nurseRepository.GetByNameAsync(name);
 
             if (nurse == null)
             {
@@ -101,7 +101,7 @@ namespace Egabinet.Services
         public async Task UpdateNurseAsync(UpdateNurseViewModel model)
         {
 
-            var nurse = await nurseRepository.GetByIdAsync(model.Id);
+            Nurse nurse = await nurseRepository.GetByIdAsync(model.Id);
 
             nurse.Surname = model.Surname;
             nurse.Address = model.Address;
@@ -113,24 +113,24 @@ namespace Egabinet.Services
 
         public async Task<IEnumerable<ShowUsersViewModel>> ShowUsers()
         {
-            var nurse = (await nurseRepository.GetAllAsync()).Select(n => new ShowUsersViewModel { UserName = $"{n.Name} {n.Surname} ", Role = "Nurse" });
-            var patient = (await patientRepository.GetAllAsync()).Select(n => new ShowUsersViewModel { UserName = $"{n.Name} {n.Surname} ", Role = "Patient" });
-            var doctor = (await doctorRepository.GetAllAsync()).Select(n => new ShowUsersViewModel { UserName = $"{n.Name} {n.Surname} ", Role = "Doctor" });
-            var viewModelUser = nurse.Concat(patient).Concat(doctor);
+            IEnumerable<ShowUsersViewModel> nurse = (await nurseRepository.GetAllAsync()).Select(n => new ShowUsersViewModel { UserName = $"{n.Name} {n.Surname}", Role = "Nurse" });
+            IEnumerable<ShowUsersViewModel> patient = (await patientRepository.GetAllAsync()).Select(n => new ShowUsersViewModel { UserName = $"{n.Name} {n.Surname}", Role = "Patient" });
+            IEnumerable<ShowUsersViewModel> doctor = (await doctorRepository.GetAllAsync()).Select(n => new ShowUsersViewModel { UserName = $"{n.Name} {n.Surname}", Role = "Doctor" });
+            IEnumerable<ShowUsersViewModel> viewModelUser = nurse.Concat(patient).Concat(doctor);
 
             return viewModelUser;
         }
 
         public async Task<List<TimeSheetViewModel>> ShowTimesheet()
         {
-            var viewModel = await timesheetRepository.GetAllAsync().Select(t => new TimeSheetViewModel { Patient = t.Patient.Name, Doctor = t.Doctor.Name, Room = t.Room.Number, Date = t.Data, Id = t.Id }).ToListAsync();
+            List<TimeSheetViewModel> viewModel = await timesheetRepository.GetAllAsync().Select(t => new TimeSheetViewModel { Patient = $"{t.Patient.Name} {t.Patient.Surname}", Doctor = $"{t.Doctor.Name} {t.Doctor.Surname}", Room = t.Room.Number, Date = t.Data, Id = t.Id }).ToListAsync();
             return viewModel;
 
         }
 
         public async Task<NurseViewModel> GetNurseAsync(string name)
         {
-            var nurse = await nurseRepository.GetByNameAsync(name);
+            Nurse nurse = await nurseRepository.GetByNameAsync(name);
 
             return new NurseViewModel { Address = nurse.Address, Name = nurse.Name, Id = nurse.Id, PermissionNumber = nurse.PermissionNumber, Surname = nurse.Surname };
         }

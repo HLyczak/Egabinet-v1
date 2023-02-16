@@ -8,9 +8,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Egabinet", "Egabinet\Egabin
 		{0FDFE9DB-2614-42BE-ADF1-4E6D7904CA72} = {0FDFE9DB-2614-42BE-ADF1-4E6D7904CA72}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestEgabinet", "TestEgabinet\TestEgabinet.csproj", "{2B24800B-C743-455E-BCD5-E5749AC08ECE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestEgabinet", "TestEgabinet\TestEgabinet.csproj", "{2B24800B-C743-455E-BCD5-E5749AC08ECE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", "{0FDFE9DB-2614-42BE-ADF1-4E6D7904CA72}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "Core\Core.csproj", "{0FDFE9DB-2614-42BE-ADF1-4E6D7904CA72}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

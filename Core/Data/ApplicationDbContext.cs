@@ -51,24 +51,42 @@ namespace Egabinet.Data
              );
 
             PasswordHasher<IdentityUser> hasher = new PasswordHasher<IdentityUser>();
-            modelBuilder.Entity<IdentityUser>().HasData
-                (
-                new IdentityUser { Id = "66126f74-f32b-435d-9e24-b3ed8b3d6011", UserName = "User1", NormalizedUserName = "USER1", PasswordHash = hasher.HashPassword(null, "Admin123!"), Email = "user1@op.pl", EmailConfirmed = true },
-                new IdentityUser { Id = "26dfb75e-5f31-4a54-9844-f019998a61d1", UserName = "User2", NormalizedUserName = "USER2", PasswordHash = hasher.HashPassword(null, "Admin123!"), Email = "user2@op.pl", EmailConfirmed = true },
-                new IdentityUser { Id = "64791af4-436d-4419-b3e1-14641bdb2493", UserName = "User3", NormalizedUserName = "USER3", PasswordHash = hasher.HashPassword(null, "Admin123!"), Email = "user3@op.pl", EmailConfirmed = true },
-                new IdentityUser { Id = "cef7f7aa-d198-4373-b441-926d8e52dbb1", UserName = "User4", NormalizedUserName = "USER4", PasswordHash = hasher.HashPassword(null, "Admin123!"), Email = "user4@op.pl", EmailConfirmed = true },
 
-                new IdentityUser { Id = "00221f79-bc71-4186-9e5d-bfd57a80a43f", UserName = "User5", NormalizedUserName = "USER5", PasswordHash = hasher.HashPassword(null, "Admin123!"), Email = "user5@op.pl", EmailConfirmed = true },
-                new IdentityUser { Id = "32923230-6c8c-4510-b73e-d9bcf2484879", UserName = "User6", NormalizedUserName = "USER6", PasswordHash = hasher.HashPassword(null, "Admin123!"), Email = "user6@op.pl", EmailConfirmed = true },
-                new IdentityUser { Id = "ed216c2a-3e1c-486f-b8ca-5f13bd8baee8", UserName = "User7", NormalizedUserName = "USER7", PasswordHash = hasher.HashPassword(null, "Admin123!"), Email = "user7@op.pl", EmailConfirmed = true },
-                new IdentityUser { Id = "c2ebef8b-eee6-4328-ba4d-f01a04fe4f83", UserName = "User8", NormalizedUserName = "USER8", PasswordHash = hasher.HashPassword(null, "Admin123!"), Email = "user8@op.pl", EmailConfirmed = true },
+            //PasswordHash = hasher.HashPassword(null, "Admin123!")
 
-                new IdentityUser { Id = "ef9632fc-d406-412f-9b7a-09b902db6dfa", UserName = "User9", NormalizedUserName = "USER9", PasswordHash = hasher.HashPassword(null, "Admin123!"), Email = "user9@op.pl", EmailConfirmed = true },
-                new IdentityUser { Id = "785a5776-fbba-4021-a263-4b9daade6ac8", UserName = "User10", NormalizedUserName = "USER10", PasswordHash = hasher.HashPassword(null, "Admin123!"), Email = "user10@op.pl", EmailConfirmed = true },
-                new IdentityUser { Id = "452db704-3650-457a-a7da-ca545a521776", UserName = "User11", NormalizedUserName = "USER11", PasswordHash = hasher.HashPassword(null, "Admin123!"), Email = "user11@op.pl", EmailConfirmed = true },
-                new IdentityUser { Id = "7fe50ba2-def6-4ac0-8b3e-87d3b4ce693f", UserName = "User12", NormalizedUserName = "USER12", PasswordHash = hasher.HashPassword(null, "Admin123!"), Email = "user12@op.pl", EmailConfirmed = true }
+            List<IdentityUser> users = new List<IdentityUser> {
+                new IdentityUser { Id = "66126f74-f32b-435d-9e24-b3ed8b3d6011", UserName = "user1@op.pl", NormalizedUserName = "USER1@OP.PL", NormalizedEmail="USER1@OP.PL", Email = "user1@op.pl", EmailConfirmed = true },
+                new IdentityUser { Id = "26dfb75e-5f31-4a54-9844-f019998a61d1", UserName = "user2@op.pl", NormalizedUserName = "USER2@OP.PL", NormalizedEmail="USER2@OP.PL", Email = "user2@op.pl", EmailConfirmed = true },
+                new IdentityUser { Id = "64791af4-436d-4419-b3e1-14641bdb2493", UserName = "user3@op.pl", NormalizedUserName = "USER3@OP.PL", NormalizedEmail="USER3@OP.PL", Email = "user3@op.pl", EmailConfirmed = true },
+                new IdentityUser { Id = "cef7f7aa-d198-4373-b441-926d8e52dbb1", UserName = "user4@op.pl", NormalizedUserName = "USER4@OP.PL", NormalizedEmail="USER4@OP.PL", Email = "user4@op.pl", EmailConfirmed = true },
 
-                );
+                new IdentityUser { Id = "00221f79-bc71-4186-9e5d-bfd57a80a43f", UserName = "user5@op.pl", NormalizedUserName = "USER5@OP.PL", NormalizedEmail="USER5@OP.PL", Email = "user5@op.pl", EmailConfirmed = true },
+                new IdentityUser { Id = "32923230-6c8c-4510-b73e-d9bcf2484879", UserName = "user6@op.pl", NormalizedUserName = "USER6@OP.PL", NormalizedEmail="USER6@OP.PL", Email = "user6@op.pl", EmailConfirmed = true },
+                new IdentityUser { Id = "ed216c2a-3e1c-486f-b8ca-5f13bd8baee8", UserName = "user7@op.pl", NormalizedUserName = "USER7@OP.PL", NormalizedEmail="USER7@OP.PL", Email = "user7@op.pl", EmailConfirmed = true },
+                new IdentityUser { Id = "c2ebef8b-eee6-4328-ba4d-f01a04fe4f83", UserName = "user8@op.pl", NormalizedUserName = "USER8@OP.PL", NormalizedEmail="USER8@OP.PL", Email = "user8@op.pl", EmailConfirmed = true },
+
+                new IdentityUser { Id = "ef9632fc-d406-412f-9b7a-09b902db6dfa", UserName = "user9@op.pl", NormalizedUserName = "USER9@OP.PL", NormalizedEmail="USER9@OP.PL", Email = "user9@op.pl", EmailConfirmed = true },
+                new IdentityUser { Id = "785a5776-fbba-4021-a263-4b9daade6ac8", UserName = "user10@op.pl", NormalizedUserName = "USER10@OP.PL", NormalizedEmail="USER10@OP.PL", Email = "user10@op.pl", EmailConfirmed = true },
+                new IdentityUser { Id = "452db704-3650-457a-a7da-ca545a521776", UserName = "user11@op.pl", NormalizedUserName = "USER11@OP.PL", NormalizedEmail="USER11@OP.PL", Email = "user11@op.pl", EmailConfirmed = true },
+                new IdentityUser { Id = "7fe50ba2-def6-4ac0-8b3e-87d3b4ce693f", UserName = "user12@op.pl", NormalizedUserName = "USER12@OP.PL", NormalizedEmail="USER12@OP.PL", Email = "user12@op.pl", EmailConfirmed = true }
+            };
+            modelBuilder.Entity<IdentityUser>().HasData(users);
+
+
+            users[0].PasswordHash = hasher.HashPassword(users[0], "Admin123!");
+            users[1].PasswordHash = hasher.HashPassword(users[1], "Admin123!");
+            users[2].PasswordHash = hasher.HashPassword(users[2], "Admin123!");
+            users[3].PasswordHash = hasher.HashPassword(users[3], "Admin123!");
+            users[4].PasswordHash = hasher.HashPassword(users[4], "Admin123!");
+            users[5].PasswordHash = hasher.HashPassword(users[5], "Admin123!");
+            users[6].PasswordHash = hasher.HashPassword(users[6], "Admin123!");
+            users[7].PasswordHash = hasher.HashPassword(users[7], "Admin123!");
+            users[8].PasswordHash = hasher.HashPassword(users[8], "Admin123!");
+            users[9].PasswordHash = hasher.HashPassword(users[9], "Admin123!");
+            users[10].PasswordHash = hasher.HashPassword(users[10], "Admin123!");
+            users[11].PasswordHash = hasher.HashPassword(users[11], "Admin123!");
+
+
 
             modelBuilder.Entity<Patient>().HasData
                 (new Patient { Id = "9262b74c-f7b4-47ba-8fcf-087241096f34", UserId = "66126f74-f32b-435d-9e24-b3ed8b3d6011", Name = "Adam", Surname = "Nowak", Address = " Magnoliowa 5", Pesel = 85011259884 },
@@ -98,23 +116,24 @@ namespace Egabinet.Data
 
             );
             modelBuilder.Entity<IdentityUserRole<string>>().HasData
-            (
-             new IdentityUserRole<string> { RoleId = "04d94d89-fe74-43ba-b052-90d5f3dea95f", UserId = "66126f74-f32b-435d-9e24-b3ed8b3d6011" },
-             new IdentityUserRole<string> { RoleId = "c1eeb9bd-5412-495a-8abf-a4157f1b546d", UserId = "26dfb75e-5f31-4a54-9844-f019998a61d1" },
-             new IdentityUserRole<string> { RoleId = "c1eeb9bd-5412-495a-8abf-a4157f1b546d", UserId = "64791af4-436d-4419-b3e1-14641bdb2493" },
-             new IdentityUserRole<string> { RoleId = "c1eeb9bd-5412-495a-8abf-a4157f1b546d", UserId = "cef7f7aa-d198-4373-b441-926d8e52dbb1" },
+(
+ new IdentityUserRole<string> { RoleId = "04d94d89-fe74-43ba-b052-90d5f3dea95f", UserId = "66126f74-f32b-435d-9e24-b3ed8b3d6011" },
+ new IdentityUserRole<string> { RoleId = "c1eeb9bd-5412-495a-8abf-a4157f1b546d", UserId = "26dfb75e-5f31-4a54-9844-f019998a61d1" },
+ new IdentityUserRole<string> { RoleId = "c1eeb9bd-5412-495a-8abf-a4157f1b546d", UserId = "64791af4-436d-4419-b3e1-14641bdb2493" },
+ new IdentityUserRole<string> { RoleId = "c1eeb9bd-5412-495a-8abf-a4157f1b546d", UserId = "cef7f7aa-d198-4373-b441-926d8e52dbb1" },
 
-             new IdentityUserRole<string> { RoleId = "72f2ff00-761f-4727-b07c-5381992b5e0a", UserId = "00221f79-bc71-4186-9e5d-bfd57a80a43f" },
-             new IdentityUserRole<string> { RoleId = "04d94d89-fe74-43ba-b052-90d5f3dea95f", UserId = "32923230-6c8c-4510-b73e-d9bcf2484879" },
-             new IdentityUserRole<string> { RoleId = "04d94d89-fe74-43ba-b052-90d5f3dea95f", UserId = "ed216c2a-3e1c-486f-b8ca-5f13bd8baee8" },
-             new IdentityUserRole<string> { RoleId = "04d94d89-fe74-43ba-b052-90d5f3dea95f", UserId = "c2ebef8b-eee6-4328-ba4d-f01a04fe4f83" },
+ new IdentityUserRole<string> { RoleId = "72f2ff00-761f-4727-b07c-5381992b5e0a", UserId = "00221f79-bc71-4186-9e5d-bfd57a80a43f" },
+ new IdentityUserRole<string> { RoleId = "04d94d89-fe74-43ba-b052-90d5f3dea95f", UserId = "32923230-6c8c-4510-b73e-d9bcf2484879" },
+ new IdentityUserRole<string> { RoleId = "04d94d89-fe74-43ba-b052-90d5f3dea95f", UserId = "ed216c2a-3e1c-486f-b8ca-5f13bd8baee8" },
+ new IdentityUserRole<string> { RoleId = "04d94d89-fe74-43ba-b052-90d5f3dea95f", UserId = "c2ebef8b-eee6-4328-ba4d-f01a04fe4f83" },
 
-             new IdentityUserRole<string> { RoleId = "04d94d89-fe74-43ba-b052-90d5f3dea95f", UserId = "ef9632fc-d406-412f-9b7a-09b902db6dfa" },
-             new IdentityUserRole<string> { RoleId = "04d94d89-fe74-43ba-b052-90d5f3dea95f", UserId = "785a5776-fbba-4021-a263-4b9daade6ac8" },
-             new IdentityUserRole<string> { RoleId = "04d94d89-fe74-43ba-b052-90d5f3dea95f", UserId = "452db704-3650-457a-a7da-ca545a521776" },
-             new IdentityUserRole<string> { RoleId = "04d94d89-fe74-43ba-b052-90d5f3dea95f", UserId = "7fe50ba2-def6-4ac0-8b3e-87d3b4ce693f" }
+ new IdentityUserRole<string> { RoleId = "04d94d89-fe74-43ba-b052-90d5f3dea95f", UserId = "ef9632fc-d406-412f-9b7a-09b902db6dfa" },
+ new IdentityUserRole<string> { RoleId = "04d94d89-fe74-43ba-b052-90d5f3dea95f", UserId = "785a5776-fbba-4021-a263-4b9daade6ac8" },
+ new IdentityUserRole<string> { RoleId = "04d94d89-fe74-43ba-b052-90d5f3dea95f", UserId = "452db704-3650-457a-a7da-ca545a521776" },
+ new IdentityUserRole<string> { RoleId = "04d94d89-fe74-43ba-b052-90d5f3dea95f", UserId = "7fe50ba2-def6-4ac0-8b3e-87d3b4ce693f" }
 
-            );
+);
+
 
             base.OnModelCreating(modelBuilder);
         }

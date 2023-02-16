@@ -1,13 +1,13 @@
-name: Kompiluj i wdrażaj aplikację .NET w aplikacji kontenera egabinet-app-20230214223052
+name: Kompiluj i wdrażaj aplikację .NET w aplikacji kontenera egabinet-app-20230215222007
 on:
   push:
     branches:
     - master
 env:
   CONTAINER_APP_CONTAINER_NAME: egabinet
-  CONTAINER_APP_NAME: egabinet-app-20230214223052
-  CONTAINER_APP_RESOURCE_GROUP_NAME: egabinet-app-20230214223052ResourceGroup
-  CONTAINER_REGISTRY_LOGIN_SERVER: egabinet20230214223824.azurecr.io
+  CONTAINER_APP_NAME: egabinet-app-20230215222007
+  CONTAINER_APP_RESOURCE_GROUP_NAME: msdocs-app-db-ef
+  CONTAINER_REGISTRY_LOGIN_SERVER: egabinet20230215222218.azurecr.io
   DOCKER_FILE_PATH: Egabinet/Dockerfile
   PROJECT_NAME_FOR_DOCKER: egabinet
 jobs:
@@ -22,8 +22,8 @@ jobs:
       uses: docker/login-action@v1
       with:
         registry: ${{ env.CONTAINER_REGISTRY_LOGIN_SERVER }}
-        username: ${{ secrets.Egabinet20230214223824_USERNAME_82F3 }}
-        password: ${{ secrets.Egabinet20230214223824_PASSWORD_82F3 }}
+        username: ${{ secrets.Egabinet20230215222218_USERNAME_6BB5 }}
+        password: ${{ secrets.Egabinet20230215222218_PASSWORD_6BB5 }}
     - name: Build and push container image to registry
       uses: docker/build-push-action@v2
       with:
@@ -37,14 +37,14 @@ jobs:
     - name: Azure Login
       uses: azure/login@v1
       with:
-        creds: ${{ secrets.egabinet_app_20230214223052_SPN }}
+        creds: ${{ secrets.egabinet_app_20230215222007_SPN }}
     - name: Deploy to containerapp
       uses: azure/CLI@v1
       with:
         inlineScript: >
           az config set extension.use_dynamic_install=yes_without_prompt
 
-          az containerapp registry set --name ${{ env.CONTAINER_APP_NAME }} --resource-group ${{ env.CONTAINER_APP_RESOURCE_GROUP_NAME }} --server ${{ env.CONTAINER_REGISTRY_LOGIN_SERVER }} --username ${{ secrets.Egabinet20230214223824_USERNAME_82F3 }} --password ${{ secrets.Egabinet20230214223824_PASSWORD_82F3 }}
+          az containerapp registry set --name ${{ env.CONTAINER_APP_NAME }} --resource-group ${{ env.CONTAINER_APP_RESOURCE_GROUP_NAME }} --server ${{ env.CONTAINER_REGISTRY_LOGIN_SERVER }} --username ${{ secrets.Egabinet20230215222218_USERNAME_6BB5 }} --password ${{ secrets.Egabinet20230215222218_PASSWORD_6BB5 }}
 
           az containerapp update --name ${{ env.CONTAINER_APP_NAME }} --container-name ${{ env.CONTAINER_APP_CONTAINER_NAME }} --resource-group ${{ env.CONTAINER_APP_RESOURCE_GROUP_NAME }} --image ${{ env.CONTAINER_REGISTRY_LOGIN_SERVER }}/${{ env.PROJECT_NAME_FOR_DOCKER }}:${{ github.sha }}
     - name: logout

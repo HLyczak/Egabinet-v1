@@ -12,6 +12,7 @@ pacjent, pielęgniarka, lekarz.
 
 ### Technologie:
 * ASP.NET CORE MVC
+* WEB API
 * ASP.NET CORE IDENTITY
 * ENTITY FRAMEWORK
 * MSSQL

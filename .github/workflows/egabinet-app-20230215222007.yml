@@ -50,10 +50,10 @@ jobs:
     - name: logout
       run: >
         az logout
+    - run:
+        ls
     - name: Run EF 
       run: > 
-        ls
-
         dotnet tool install --global dotnet-ef
 
         dotnet tool restore

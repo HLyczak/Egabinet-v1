@@ -53,6 +53,9 @@ jobs:
     - name: Run EF 
       run: > 
         ls
+
         dotnet tool install --global dotnet-ef
+
         dotnet tool restore
+
         cd .. && dotnet ef database update -p Egabinet --connection ${{ secrets.DBConnection }}

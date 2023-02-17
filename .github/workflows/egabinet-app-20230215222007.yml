@@ -50,8 +50,12 @@ jobs:
     - name: logout
       run: >
         az logout
+    - name: Checkout to the branch
+      uses: actions/checkout@v2
     - run:
         cd .. && ls
+    - run:
+        ls
     - name: Run EF 
       run: > 
         dotnet tool install --global dotnet-ef

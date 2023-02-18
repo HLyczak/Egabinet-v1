@@ -26,7 +26,7 @@ jobs:
         inlineScript: >
           agentIP=$(curl -s https://api.ipify.org/)
 
-          az sql server firewall-rule create -r egabinet-app-ResourceGroup -s egabinetdbserver -n githubAction --end-ip-address $agentIP --end-ip-address $agentIP
+          az sql server firewall-rule create -g egabinet-app-ResourceGroup -s egabinetdbserver -n githubAction --end-ip-address $agentIP --end-ip-address $agentIP
 
           sleep 300
 

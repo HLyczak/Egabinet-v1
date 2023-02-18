@@ -62,4 +62,4 @@ jobs:
 
         dotnet tool restore
 
-        dotnet ef database update -p Egabinet --connection ${{ secrets.DBConnection }}
+        dotnet ef database update -p Egabinet --connection ${{ secrets.DBCONNECTION }}

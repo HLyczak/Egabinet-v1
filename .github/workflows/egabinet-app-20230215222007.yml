@@ -47,6 +47,13 @@ jobs:
           az containerapp registry set --name ${{ env.CONTAINER_APP_NAME }} --resource-group ${{ env.CONTAINER_APP_RESOURCE_GROUP_NAME }} --server ${{ env.CONTAINER_REGISTRY_LOGIN_SERVER }} --username ${{ secrets.Egabinet20230215222218_USERNAME_CAFF }} --password ${{ secrets.Egabinet20230215222218_PASSWORD_CAFF }}
 
           az containerapp update --name ${{ env.CONTAINER_APP_NAME }} --container-name ${{ env.CONTAINER_APP_CONTAINER_NAME }} --resource-group ${{ env.CONTAINER_APP_RESOURCE_GROUP_NAME }} --image ${{ env.CONTAINER_REGISTRY_LOGIN_SERVER }}/${{ env.PROJECT_NAME_FOR_DOCKER }}:${{ github.sha }}
+    - name: Run EF 
+      run: > 
+        dotnet tool install --global dotnet-ef
+
+        dotnet tool restore
+
+        dotnet ef database update -p Egabinet --connection ${{ secrets.DBCONNECTION }}
     - name: logout
       run: >
         az logout
@@ -56,10 +63,3 @@ jobs:
         cd .. && ls
     - run:
         ls
-    - name: Run EF 
-      run: > 
-        dotnet tool install --global dotnet-ef
-
-        dotnet tool restore
-
-        dotnet ef database update -p Egabinet --connection ${{ secrets.DBCONNECTION }}

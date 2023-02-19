@@ -21,7 +21,7 @@ namespace Egabinet.Services
 
         public async Task DeleteVisitAsync(string id)
         {
-            var visitToDelete = await timesheetRepository.GetByIdAsync(id);
+            Core.Domain.TimeSheet visitToDelete = await timesheetRepository.GetByIdAsync(id);
 
             if (visitToDelete == null)
             {
@@ -32,7 +32,7 @@ namespace Egabinet.Services
 
         public async Task<UpdatePatientViewModel> GetUpdatePatientViewModel(string name)
         {
-            var patient = await patientRepository.GetByNameAsync(name);
+            Core.Domain.Patient patient = await patientRepository.GetByNameAsync(name);
 
             if (patient == null)
             {
@@ -57,14 +57,14 @@ namespace Egabinet.Services
 
         public async Task<List<TimeSheetViewModel>> ShowTimesheet(string name)
         {
-            var patient = await GetUser(name);
-            var viewModel = await timesheetRepository.GetAllByPatientIdAsync(patient.Id).Select(t => new TimeSheetViewModel { Patient = t.Patient.Name, Doctor = t.Doctor.Name, Room = t.Room.Number, Date = t.Data, Id = t.Id }).ToListAsync();
+            IdentityUser patient = await GetUser(name);
+            List<TimeSheetViewModel> viewModel = await timesheetRepository.GetAllByPatientIdAsync(patient.Id).Select(t => new TimeSheetViewModel { Patient = $"{t.Patient.Name} {t.Patient.Surname}", Doctor = $"{t.Doctor.Name} {t.Doctor.Surname}", Room = t.Room.Number, Date = t.Data, Id = t.Id }).ToListAsync();
             return viewModel;
         }
 
         public async Task UpdatePatientAsync(UpdatePatientViewModel model)
         {
-            var patient = await patientRepository.GetByIdAsync(model.Id);
+            Core.Domain.Patient patient = await patientRepository.GetByIdAsync(model.Id);
             patient.Address = model.Address;
 
             await patientRepository.UpdateAsync(patient);
@@ -73,7 +73,7 @@ namespace Egabinet.Services
 
         public async Task<PatientViewModel> GetPatientAsync(string name)
         {
-            var patient = await patientRepository.GetByNameAsync(name);
+            Core.Domain.Patient patient = await patientRepository.GetByNameAsync(name);
 
             return new PatientViewModel { Address = patient.Address, Name = patient.Name, Id = patient.Id, Surname = patient.Surname };
         }

@@ -63,7 +63,8 @@ namespace Egabinet.Services
         public async Task<List<TimeSheetViewModel>> ShowTimesheet(string name)
         {
             var doctor = await GetUser(name);
-            var viewModel = await timesheetRepository.GetAllByDoctorIdAsync(doctor.Id).Select(t => new TimeSheetViewModel { Patient = t.Patient.Name, Doctor = t.Doctor.Name, Room = t.Room.Number, Date = t.Data, Id = t.Id }).ToListAsync();
+
+            var viewModel = await timesheetRepository.GetAllByDoctorIdAsync(doctor.Id).Select(t => new TimeSheetViewModel { Patient = $"{t.Patient.Name} {t.Patient.Surname}", Doctor = $"{t.Doctor.Name} {t.Doctor.Surname}", Room = t.Room.Number, Date = t.Data, Id = t.Id }).ToListAsync();
             return viewModel;
         }
 
